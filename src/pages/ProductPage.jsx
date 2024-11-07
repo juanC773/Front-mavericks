@@ -8,11 +8,11 @@ function ProductPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Llama al endpoint para obtener los productos
-        axios.get('http://localhost:8080/products')
+       
+        axios.get('http://localhost:8080/mavericks/products')
             .then(response => {
-                setProducts(response.data); // Guarda los productos en el estado
-                setLoading(false); // Cambia el estado de carga
+                setProducts(response.data); 
+                setLoading(false); 
             })
             .catch(error => {
                 console.error("Hubo un error al obtener los productos:", error);
