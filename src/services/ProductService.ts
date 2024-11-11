@@ -26,6 +26,15 @@ updateProduct: async (id: number, product: Product): Promise<Product> => {
 },
 
 
+createProduct: async (product: Product): Promise<Product> => {
+  try {
+    const response = await axios.post('/products', product);  // Llamada POST al backend
+    return response.data;
+  } catch (error) {
+    console.error('Error al agregar el producto', error);
+    throw error;
+  }
+},
 
   
 getProductById: async (id: number): Promise<Product> => {

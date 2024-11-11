@@ -56,10 +56,25 @@ const ProductPage: React.FC = () => {
               <p>Precio: ${product.price}</p>
               <p>Stock: {product.stock}</p>
               <p>Categoría ID: {product.categoryId}</p>
-              <button onClick={() => handleDelete(product.idProduct)}>Eliminar</button>
+
+              <button 
+                  onClick={() => {
+                   if (product.idProduct !== undefined) {
+                      handleDelete(product.idProduct);
+                   } else {
+                      console.error('ID de producto no definido');
+                  }
+              }}
+>
+  Eliminar
+</button>
+
               <Link to={`/products/edit/${product.idProduct}`}>
                 <button>Editar</button> {/* Botón de editar */}
               </Link>
+              <Link to="/products/add">
+                 <button>Agregar Nuevo Producto</button>  {/* Botón para redirigir al formulario */}
+             </Link>
             </li>
           ))}
         </ul>
