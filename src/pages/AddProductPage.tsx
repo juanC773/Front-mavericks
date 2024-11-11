@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import ProductService from '../services/ProductService';  // Importar el servicio para la API
-import { useNavigate } from 'react-router-dom';  // Importar para redirigir después de crear el producto
+import ProductService from '../services/ProductService';
+import { useNavigate } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
+import '../styles/forms.css'; // Importamos el CSS
 
 const AddProductPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const AddProductPage: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const navigate = useNavigate();  // Para redirigir después de agregar el producto
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,68 +39,108 @@ const AddProductPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <section>
       <PageTitle title="Agregar Producto" />
       
+      <div className="flex justify-center box-border px-20 py-10">
+        <div className="container_create">
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          
+          <form onSubmit={handleSubmit}>
+            <div className="input_group">
+              <label className="form_label" htmlFor="name">
+                Nombre del Producto
+              </label>
+              <input
+                className="form_input"
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Escribe el nombre del producto"
+                required
+              />
+            </div>
 
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Nombre:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+            <div className="input_group">
+              <label className="form_label" htmlFor="description">
+                Descripción
+              </label>
+              <textarea
+                className="form_textarea"
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Escribe una breve descripción"
+                required
+              />
+            </div>
+
+            <div className="input_group">
+              <label className="form_label" htmlFor="price">
+                Precio
+              </label>
+              <input
+                className="form_input"
+                type="number"
+                id="price"
+                value={price}
+                onChange={(e) => setPrice(parseFloat(e.target.value))}
+                placeholder="Ingresa el precio"
+                required
+              />
+            </div>
+
+            <div className="input_group">
+              <label className="form_label" htmlFor="stock">
+                Stock
+              </label>
+              <input
+                className="form_input"
+                type="number"
+                id="stock"
+                value={stock}
+                onChange={(e) => setStock(parseInt(e.target.value))}
+                placeholder="Ingresa el stock disponible"
+                required
+              />
+            </div>
+
+            <div className="input_group">
+              <label className="form_label" htmlFor="categoryId">
+                ID Categoría
+              </label>
+              <input
+                className="form_input"
+                type="number"
+                id="categoryId"
+                value={categoryId}
+                onChange={(e) => setCategoryId(parseInt(e.target.value))}
+                placeholder="Ingresa el ID de la categoría"
+                required
+              />
+            </div>
+
+            <div className="button_group">
+              <button 
+                className="button_save" 
+                type="submit" 
+                disabled={loading}
+              >
+                {loading ? 'Cargando...' : 'Guardar Producto'}
+              </button>
+              <button 
+                className="button_cancel"
+                type="button"
+                onClick={() => navigate('/products')}
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
         </div>
-        <div>
-          <label htmlFor="description">Descripción:</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="price">Precio:</label>
-          <input
-            type="number"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="stock">Stock:</label>
-          <input
-            type="number"
-            id="stock"
-            value={stock}
-            onChange={(e) => setStock(parseInt(e.target.value))}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="categoryId">ID Categoría:</label>
-          <input
-            type="number"
-            id="categoryId"
-            value={categoryId}
-            onChange={(e) => setCategoryId(parseInt(e.target.value))}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Cargando...' : 'Agregar Producto'}
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+    </section>
   );
 };
 

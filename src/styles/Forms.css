@@ -1,0 +1,74 @@
+.container_create {
+    @apply w-full max-w-lg bg-white p-10 rounded-3xl shadow-lg;
+}
+
+.container_create:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.form_label {
+    color: #4A221A;
+    font-size: 20px;
+    display: block;
+    margin-left: 0.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.form_input {
+    border: 2px dashed #c4ab94;
+    padding: 0.75rem;
+    border-radius: 1.5rem;
+    width: 100%;
+}
+
+.form_input:focus {
+    outline: none;
+}
+
+.form_textarea {
+    border: 2px dashed #a88a70;
+    padding: 0.75rem;
+    border-radius: 1.5rem;
+    width: 100%;
+}
+
+.form_textarea:focus {
+    outline: none;
+}
+
+.button_save {
+    border-color: #ff8304;
+    color: #4A221A;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 1.5rem;
+}
+
+.button_save:hover {
+    background-color: #ffb469;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.button_cancel {
+    border-color: rgb(194, 99, 99);
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 1.5rem;
+}
+
+.button_cancel:hover {
+    background-color: rgb(194, 99, 99);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.input_group {
+    margin-bottom: 1.5rem;
+}
+
+.button_group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
