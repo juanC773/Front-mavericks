@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProductService from '../services/ProductService';  // Importar el servicio para la API
 import { useNavigate } from 'react-router-dom';  // Importar para redirigir después de crear el producto
+import PageTitle from '../components/PageTitle';
 
 const AddProductPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -38,7 +39,9 @@ const AddProductPage: React.FC = () => {
 
   return (
     <div>
-      <h1>Agregar Producto</h1>
+      <PageTitle title="Agregar Producto" />
+      
+
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
