@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 //import FirstComponent from './components/first';
 import { store, persistor } from './store';
 import NavBar from './components/Navbar';
+import Footer from './components/Footer';
 
 //Router
 import { RouterProvider } from 'react-router-dom';
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
       <NavBar />
       <RouterProvider router={routes} />
+      <Footer />
       
 
     </PersistGate>
