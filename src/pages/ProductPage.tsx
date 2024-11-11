@@ -1,46 +1,80 @@
-import React, { useEffect, useState } from 'react';  
-import ProductService from '../services/ProductService';  // Importa el servicio para obtener productos
-import { Product } from '../types/Product';  // Importa el tipo Product
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';  // Importar Link para navegación
+import ProductService from '../services/ProductService';
+import { Product } from '../types/Product';
 
 const ProductPage: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);  // Estado para almacenar los productos
-  const [loading, setLoading] = useState<boolean>(true);  // Estado para saber si están cargando los productos
-  const [error, setError] = useState<string | null>(null);  // Estado para manejar errores
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await ProductService.getAllProducts();  // Obtiene los productos
-        setProducts(data);  // Guarda los productos en el estado
+        const data = await ProductService.getAllProducts();
+        setProducts(data);
       } catch (error) {
-        setError('Error al cargar los productos');  
-        console.error('Error al obtener los productos:', error); 
+        setError('Error al cargar los productos');
+        console.error('Error al obtener los productos:', error);
       } finally {
-        setLoading(false);  
+        setLoading(false);
       }
     };
 
-    fetchProducts();  // Llama la función para obtener productos
-  }, []);  //aqui pues es lo de las dependencias que solo se ejecuta una vez al montarse el componente
+    fetchProducts();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    try {
+      await ProductService.deleteProduct(id);
+      setProducts(products.filter(product => product.idProduct !== id));
+    } catch (error) {
+      setError('Error al eliminar el producto');
+      console.error('Error al eliminar el producto:', error);
+    }
+  };
 
   if (loading) {
-    return <div>Cargando productos...</div>; 
+    return <div>Cargando productos...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;  // Muestra el mensaje de error si ocurrió uno
+    return <div>{error}</div>;
   }
 
   return (
     <div>
       <h1>Lista de Productos</h1>
       {products.length === 0 ? (
-        <p>No hay productos disponibles</p> 
+        <p>No hay productos disponibles</p>
       ) : (
         <ul>
           {products.map((product: Product) => (
-            <li key={product.id}>
-              {product.name} - ${product.price}  
+            <li key={product.idProduct}>
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <p>Precio: ${product.price}</p>
+              <p>Stock: {product.stock}</p>
+              <p>Categoría ID: {product.categoryId}</p>
+
+              <button 
+                  onClick={() => {
+                   if (product.idProduct !== undefined) {
+                      handleDelete(product.idProduct);
+                   } else {
+                      console.error('ID de producto no definido');
+                  }
+              }}
+>
+  Eliminar
+</button>
+
+              <Link to={`/products/edit/${product.idProduct}`}>
+                <button>Editar</button> {/* Botón de editar */}
+              </Link>
+              <Link to="/products/add">
+                 <button>Agregar Nuevo Producto</button>  {/* Botón para redirigir al formulario */}
+             </Link>
             </li>
           ))}
         </ul>
