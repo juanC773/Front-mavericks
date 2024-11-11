@@ -39,7 +39,7 @@ const ProductPage: React.FC = () => {
       ) : (
         <ul>
           {products.map((product: Product) => (
-            <li key={product.id}>
+            <li key={product.idProduct}>
               {product.name} - ${product.price}  
             </li>
           ))}
