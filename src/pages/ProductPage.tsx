@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';  
-import ProductService from '../services/ProductService';  // Importa el servicio para obtener productos
-import { Product } from '../types/Product';  // Importa el tipo Product
+import ProductService from '../services/ProductService';  
+import { Product } from '../types/Product';  
 
 const ProductPage: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);  // Estado para almacenar los productos
-  const [loading, setLoading] = useState<boolean>(true);  // Estado para saber si están cargando los productos
-  const [error, setError] = useState<string | null>(null);  // Estado para manejar errores
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await ProductService.getAllProducts();  // Obtiene los productos
-        setProducts(data);  // Guarda los productos en el estado
+        const data = await ProductService.getAllProducts();
+        setProducts(data);
       } catch (error) {
         setError('Error al cargar los productos');  
         console.error('Error al obtener los productos:', error); 
@@ -20,15 +20,26 @@ const ProductPage: React.FC = () => {
       }
     };
 
-    fetchProducts();  // Llama la función para obtener productos
-  }, []);  //aqui pues es lo de las dependencias que solo se ejecuta una vez al montarse el componente
+    fetchProducts();
+  }, []); 
+
+  // Función para eliminar un producto
+  const handleDelete = async (id: number) => {
+    try {
+      await ProductService.deleteProduct(id);  // Llamamos al servicio para eliminar el producto
+      setProducts(products.filter(product => product.idProduct !== id));  // Actualizamos el estado eliminando el producto
+    } catch (error) {
+      setError('Error al eliminar el producto');
+      console.error('Error al eliminar el producto:', error);
+    }
+  };
 
   if (loading) {
-    return <div>Cargando productos...</div>; 
+    return <div>Cargando productos...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;  // Muestra el mensaje de error si ocurrió uno
+    return <div>{error}</div>;
   }
 
   return (
@@ -40,7 +51,12 @@ const ProductPage: React.FC = () => {
         <ul>
           {products.map((product: Product) => (
             <li key={product.idProduct}>
-              {product.name} - ${product.price}  
+              <h3>{product.name}</h3>
+              <p>{product.description}</p> {/* Mostrar descripción */}
+              <p>Precio: ${product.price}</p>
+              <p>Stock: {product.stock}</p> {/* Mostrar stock */}
+              <p>Categoría ID: {product.categoryId}</p> {/* Mostrar categoría */}
+              <button onClick={() => handleDelete(product.idProduct)}>Eliminar</button>  {/* Botón para eliminar */}
             </li>
           ))}
         </ul>
