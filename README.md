@@ -17,6 +17,9 @@ npm install react-router-dom
 # Instalar axios:
 npm install axios
 
+# Instalar lucide:
+npm install lucide-react
+
 
 # Instalar el resto de dependencias:
 npm install
