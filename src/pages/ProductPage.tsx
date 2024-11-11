@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';  // Importar Link para navegación
+import { Link } from 'react-router-dom';
 import ProductService from '../services/ProductService';
 import { Product } from '../types/Product';
 
@@ -45,6 +45,12 @@ const ProductPage: React.FC = () => {
   return (
     <div>
       <h1>Lista de Productos</h1>
+      
+      {/* Botón para agregar un nuevo producto, visible siempre */}
+      <Link to="/products/add">
+        <button>Agregar Nuevo Producto</button>
+      </Link>
+
       {products.length === 0 ? (
         <p>No hay productos disponibles</p>
       ) : (
@@ -58,23 +64,20 @@ const ProductPage: React.FC = () => {
               <p>Categoría ID: {product.categoryId}</p>
 
               <button 
-                  onClick={() => {
-                   if (product.idProduct !== undefined) {
-                      handleDelete(product.idProduct);
-                   } else {
-                      console.error('ID de producto no definido');
+                onClick={() => {
+                  if (product.idProduct !== undefined) {
+                    handleDelete(product.idProduct);
+                  } else {
+                    console.error('ID de producto no definido');
                   }
-              }}
->
-  Eliminar
-</button>
+                }}
+              >
+                Eliminar
+              </button>
 
               <Link to={`/products/edit/${product.idProduct}`}>
-                <button>Editar</button> {/* Botón de editar */}
+                <button>Editar</button>
               </Link>
-              <Link to="/products/add">
-                 <button>Agregar Nuevo Producto</button>  {/* Botón para redirigir al formulario */}
-             </Link>
             </li>
           ))}
         </ul>

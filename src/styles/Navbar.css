@@ -1,0 +1,68 @@
+
+   
+    .body {
+        font-family: 'Sen', sans-serif;
+        font-weight: bold;
+       
+    }
+    
+
+
+    .title_users {
+    
+    
+        padding-bottom: 50px;
+    
+    }
+    
+    .title {
+    
+        font-family: "Poppins", sans-serif;
+        text-align: center; /* text-center */
+        font-size: 4.1rem; 
+        font-weight: bold; /* font-bold */
+         color: #4A221A;
+         background: linear-gradient(to bottom, #F3EAEA, #f3efef, white);
+         /* bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 */
+        padding: 1.25rem; /* p-5 */
+        border-radius: 0.75rem; /* rounded-lg */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+        transition: transform 0.3s; /* transition-transform duration-300 */
+        margin-top: 0;
+    
+        /*background-color: #F3EAEA;*/
+    }
+    
+    .title:hover {
+        transform: scale(1.05); /* hover:scale-105 */
+    }
+    
+
+
+.nav_i{
+
+
+    background-color: #F3EAEA;
+
+    color: #000000;
+
+
+}
+
+
+
+
+.init:hover, .register:hover{
+
+    color: #ff8304;
+}
+
+.contact, .init, .order {
+    color: #4A221A;
+}
+
+.contact:hover, .init:hover, .order:hover {
+    color: #ff8304;
+}
+
+
