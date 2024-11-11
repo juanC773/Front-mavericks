@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';  
-import ProductService from '../services/ProductService';  
-import { Product } from '../types/Product';  
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';  // Importar Link para navegación
+import ProductService from '../services/ProductService';
+import { Product } from '../types/Product';
 
 const ProductPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,21 +14,20 @@ const ProductPage: React.FC = () => {
         const data = await ProductService.getAllProducts();
         setProducts(data);
       } catch (error) {
-        setError('Error al cargar los productos');  
-        console.error('Error al obtener los productos:', error); 
+        setError('Error al cargar los productos');
+        console.error('Error al obtener los productos:', error);
       } finally {
-        setLoading(false);  
+        setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []); 
+  }, []);
 
-  // Función para eliminar un producto
   const handleDelete = async (id: number) => {
     try {
-      await ProductService.deleteProduct(id);  // Llamamos al servicio para eliminar el producto
-      setProducts(products.filter(product => product.idProduct !== id));  // Actualizamos el estado eliminando el producto
+      await ProductService.deleteProduct(id);
+      setProducts(products.filter(product => product.idProduct !== id));
     } catch (error) {
       setError('Error al eliminar el producto');
       console.error('Error al eliminar el producto:', error);
@@ -46,17 +46,20 @@ const ProductPage: React.FC = () => {
     <div>
       <h1>Lista de Productos</h1>
       {products.length === 0 ? (
-        <p>No hay productos disponibles</p> 
+        <p>No hay productos disponibles</p>
       ) : (
         <ul>
           {products.map((product: Product) => (
             <li key={product.idProduct}>
               <h3>{product.name}</h3>
-              <p>{product.description}</p> {/* Mostrar descripción */}
+              <p>{product.description}</p>
               <p>Precio: ${product.price}</p>
-              <p>Stock: {product.stock}</p> {/* Mostrar stock */}
-              <p>Categoría ID: {product.categoryId}</p> {/* Mostrar categoría */}
-              <button onClick={() => handleDelete(product.idProduct)}>Eliminar</button>  {/* Botón para eliminar */}
+              <p>Stock: {product.stock}</p>
+              <p>Categoría ID: {product.categoryId}</p>
+              <button onClick={() => handleDelete(product.idProduct)}>Eliminar</button>
+              <Link to={`/products/edit/${product.idProduct}`}>
+                <button>Editar</button> {/* Botón de editar */}
+              </Link>
             </li>
           ))}
         </ul>
