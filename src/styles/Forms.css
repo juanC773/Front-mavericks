@@ -37,25 +37,30 @@
     outline: none;
 }
 
+
+
 .button_save {
-    border-color: #ff8304;
+    border: 2px solid #ff8304; 
     color: #4A221A;
     font-weight: bold;
     padding: 0.5rem 1rem;
     border-radius: 1.5rem;
 }
 
+.button_cancel {
+    border: 2px solid rgb(194, 99, 99); 
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 1.5rem;
+}
+
+
+
 .button_save:hover {
     background-color: #ffb469;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.button_cancel {
-    border-color: rgb(194, 99, 99);
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    border-radius: 1.5rem;
-}
 
 .button_cancel:hover {
     background-color: rgb(194, 99, 99);
