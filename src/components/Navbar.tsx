@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';  // Importar RootState
+import { ShoppingCart } from "lucide-react";
 import '../styles/navbar.css';
 
 function NavBar() {
-  const { cart } = useCart();
+  // Usar useSelector para acceder al estado del carrito en Redux
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
-  // Calcular la cantidad total de artículos en el carrito usando `cart.items`
-  const totalItems = cart ? cart.items.reduce((sum, item) => sum + item.quantity, 0) : 0;
+  // Calcular la cantidad total de productos en el carrito
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <nav className="nav_i py-5 box-border">
@@ -28,9 +31,11 @@ function NavBar() {
         <div className="flex items-center space-x-10">
           {/* Icono de Carrito con contador */}
           <Link to="/cart" className="text-lg flex items-center relative">
-            <img src="/img/carrito_compras.png" alt="Carrito" className="w-8 h-8" />
+            <ShoppingCart className="hover:text-[#ff7359]" />
             {totalItems > 0 && (
-              <span className="cart-count">{totalItems}</span>
+              <span className="cart-count absolute top-0 right-0 bg-red-600 text-white text-sm rounded-full w-5 h-5 flex items-center justify-center">
+                {totalItems}
+              </span>
             )}
           </Link>
           <a className="init text-lg" href="#Iniciar_sesion">Iniciar sesión</a>

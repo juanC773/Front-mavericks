@@ -14,7 +14,7 @@ const router = createRoutesFromElements(
         <Route path="/products" element={<ProductPage />} />
         <Route path="/products/add" element={<AddProductPage />} />
         <Route path="/products/edit/:id" element={<EditProductPage />} />
-        <Route path="/cart" element={<Cart />} /> {/* Ruta del carrito */}
+        <Route path="/cart" element={<Cart />} />
     </Route>
 );
 export const routes = createBrowserRouter(router);

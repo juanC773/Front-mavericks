@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import CategoriesService from '../services/CategoriesService';
 import ProductService from '../services/ProductService';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
@@ -10,10 +11,28 @@ const AddProductPage: React.FC = () => {
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
+  const [categories, setCategories] = useState<any[]>([]);  // Estado para almacenar las categorías
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const fetchedCategories = await CategoriesService.getAllCategories();
+        setCategories(fetchedCategories);  
+        // Aquí agregamos el console.log para ver las categorías obtenidas
+        console.log('Categorías obtenidas:', fetchedCategories);
+        
+      } catch (error) {
+        setError('Error al obtener las categorías');
+        console.error('Error al obtener las categorías:', error);
+      }
+    };
+  
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,19 +125,25 @@ const AddProductPage: React.FC = () => {
               />
             </div>
 
+            {/* Cambiar el input para seleccionar la categoría */}
             <div className="input_group">
               <label className="form_label" htmlFor="categoryId">
-                ID Categoría
+                Categoría
               </label>
-              <input
+              <select
                 className="form_input"
-                type="number"
                 id="categoryId"
                 value={categoryId}
                 onChange={(e) => setCategoryId(parseInt(e.target.value))}
-                placeholder="Ingresa el ID de la categoría"
                 required
-              />
+              >
+                <option value={0}>Selecciona una categoría</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="button_group">

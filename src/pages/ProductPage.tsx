@@ -1,12 +1,11 @@
-// src/pages/ProductPage.tsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addItem } from '../store/cartSlice';
 import ProductService from '../services/ProductService';
 import { Product } from '../types/Product';
 import PageTitle from '../components/PageTitle';
 import { PlusCircle, Package, DollarSign, BoxIcon, Tag, Edit2, Trash2, ShoppingCart } from 'lucide-react';
+import { addItem } from '../store/cartSlice';
 
 const ProductPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -19,6 +18,8 @@ const ProductPage: React.FC = () => {
       try {
         const data = await ProductService.getAllProducts();
         setProducts(data);
+
+        console.log(data)
       } catch (error) {
         setError('Error al cargar los productos');
         console.error('Error al obtener los productos:', error);
@@ -150,7 +151,7 @@ const ProductPage: React.FC = () => {
                       onClick={() => handleAddToCart(product)}
                     >
                       <ShoppingCart size={16} />
-                      Agregar al carrito
+                      Agregar
                     </button>
                   </div>
                 </div>

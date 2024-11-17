@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import axios from '../services/axios';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Product } from '../types/Product';
 
 interface CartItem {
@@ -8,77 +7,46 @@ interface CartItem {
   quantity: number;
 }
 
-interface Cart {
-  id: number;
-  items: CartItem[];
-}
-
 interface CartContextProps {
-  cart: Cart | null;
-  fetchCart: (cartId: number) => Promise<void>;
-  addItemToCart: (cartId: number, product: Product, quantity: number) => Promise<void>;
-  removeItemFromCart: (cartId: number, productId: number) => Promise<void>;
-  clearCart: (cartId: number) => Promise<void>;
+  cart: CartItem[];
+  addItemToCart: (product: Product, quantity: number) => void;
+  removeItemFromCart: (productId: number) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<Cart | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
-  const fetchCart = async (cartId: number) => {
-    try {
-      const response = await axios.get(`/api/carts/${cartId}`);
-      setCart(response.data);
-    } catch (error) {
-      console.error('Error al obtener el carrito', error);
-    }
+  const addItemToCart = (product: Product, quantity: number) => {
+    console.log('Adding to cart:', cart);
+    setCart((prevCart) => {
+      const existingItemIndex = prevCart.findIndex((item) => item.product.idProduct === product.idProduct);
+  
+      if (existingItemIndex >= 0) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingItemIndex].quantity += quantity;
+        console.log('Updated cart:', updatedCart);
+        return updatedCart;
+      } else {
+        const newCart = [...prevCart, { id: Date.now(), product, quantity }];
+        console.log('New cart:', newCart);
+        return newCart;
+      }
+    });
   };
 
-  const createCart = async () => {
-    try {
-      const response = await axios.post(`/api/carts`);
-      setCart(response.data);
-    } catch (error) {
-      console.error('Error al crear el carrito', error);
-    }
+  const removeItemFromCart = (productId: number) => {
+    setCart((prevCart) => prevCart.filter((item) => item.product.idProduct !== productId));
   };
 
-  const addItemToCart = async (cartId: number, product: Product, quantity: number) => {
-    try {
-      await axios.post(`/api/carts/${cartId}/add`, product, { params: { quantity } });
-      await fetchCart(cartId); // Refresca el carrito después de agregar el producto
-    } catch (error) {
-      console.error('Error al agregar el producto al carrito', error);
-    }
+  const clearCart = () => {
+    setCart([]);
   };
-
-  const removeItemFromCart = async (cartId: number, productId: number) => {
-    try {
-      await axios.delete(`/api/carts/${cartId}/remove/${productId}`);
-      await fetchCart(cartId);
-    } catch (error) {
-      console.error('Error al eliminar el producto del carrito', error);
-    }
-  };
-
-  const clearCart = async (cartId: number) => {
-    try {
-      await axios.delete(`/api/carts/${cartId}`);
-      setCart(null);
-    } catch (error) {
-      console.error('Error al vaciar el carrito', error);
-    }
-  };
-
-  useEffect(() => {
-    if (!cart) {
-      createCart();
-    }
-  }, [cart]);
 
   return (
-    <CartContext.Provider value={{ cart, fetchCart, addItemToCart, removeItemFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addItemToCart, removeItemFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
