@@ -108,7 +108,7 @@ const ProductPage: React.FC = () => {
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <DollarSign size={16} className="text-orange-500" />
                       <span className="text-orange-600 font-bold text-lg">
-                        ${product.price.toFixed(2)}
+                        {product.price.toFixed(2)}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm font-medium">
