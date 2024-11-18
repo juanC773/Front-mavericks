@@ -32,6 +32,7 @@ const ProductPage: React.FC = () => {
     setLoading(true);
     try {
       const data = await ProductService.searchProducts(params);
+      console.log('Productos recuperados:', data); // Agrega este log
       setProducts(data);
     } catch (error) {
       setError('Error al cargar los productos');
@@ -193,13 +194,19 @@ const ProductPage: React.FC = () => {
                 className="bg-white rounded-3xl shadow-md overflow-hidden border border-gray-100
                          transition-all duration-200 hover:shadow-xl"
               >
+                
+
                 <div className="w-full h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
-                  <img 
-                    src="https://ih1.redbubble.net/image.4252685049.9677/pp,504x498-pad,600x600,f8f8f8.jpg" 
-                    alt={product.name} 
-                    className="object-cover w-full h-full"
-                  />
-                </div>
+  <img 
+    src={product.image || "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Sin+Imagen"} 
+    alt={product.name} 
+    className="object-cover w-full h-full"
+    onError={(e) => {
+      e.currentTarget.src = "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Error+de+Imagen";
+    }}
+  />
+</div>
+
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-2 truncate">
                     {product.name}
