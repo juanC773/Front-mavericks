@@ -120,24 +120,24 @@ const ProductPage: React.FC = () => {
             </div>
 
             {/* Filtros de precio */}
-            <div className="flex gap-2">
-              <input
-                type="number"
-                placeholder="Precio min"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-                className="w-24 px-3 py-2 rounded-full border border-gray-300 
-                          focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              />
-              <input
-                type="number"
-                placeholder="Precio max"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
-                className="w-24 px-3 py-2 rounded-full border border-gray-300 
-                          focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              />
-            </div>
+<div className="flex flex-col lg:flex-row gap-2">
+  <input
+    type="number"
+    placeholder="Precio mínimo"
+    value={minPrice}
+    onChange={(e) => setMinPrice(e.target.value)}
+    className="w-full lg:w-40 px-3 py-2 rounded-full border border-gray-300 
+              focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+  />
+  <input
+    type="number"
+    placeholder="Precio máximo"
+    value={maxPrice}
+    onChange={(e) => setMaxPrice(e.target.value)}
+    className="w-full lg:w-40 px-3 py-2 rounded-full border border-gray-300 
+              focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+  />
+</div>
 
             {/* Selector de ordenamiento */}
             <select
