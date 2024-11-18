@@ -196,11 +196,11 @@ const ProductPage: React.FC = () => {
               >
                 
 
-                <div className="w-full h-48 bg-gray-100 overflow-hidden flex items-center justify-center">
+                <div className="w-full h-64 bg-gray-100 overflow-hidden group">
   <img 
     src={product.image || "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Sin+Imagen"} 
     alt={product.name} 
-    className="object-cover w-full h-full"
+    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
     onError={(e) => {
       e.currentTarget.src = "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Error+de+Imagen";
     }}
