@@ -3,7 +3,8 @@ import CategoriesService from '../services/CategoriesService';
 import ProductService from '../services/ProductService';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
-import '../styles/forms.css'; // Importamos el CSS
+import { Upload } from 'lucide-react';
+import '../styles/forms.css';
 
 const AddProductPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -11,9 +12,11 @@ const AddProductPage: React.FC = () => {
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
-  const [categories, setCategories] = useState<any[]>([]);  // Estado para almacenar las categorías
+  const [categories, setCategories] = useState<any[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
   
   const navigate = useNavigate();
 
@@ -21,10 +24,7 @@ const AddProductPage: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const fetchedCategories = await CategoriesService.getAllCategories();
-        setCategories(fetchedCategories);  
-        // Aquí agregamos el console.log para ver las categorías obtenidas
-        console.log('Categorías obtenidas:', fetchedCategories);
-        
+        setCategories(fetchedCategories);
       } catch (error) {
         setError('Error al obtener las categorías');
         console.error('Error al obtener las categorías:', error);
@@ -33,6 +33,36 @@ const AddProductPage: React.FC = () => {
   
     fetchCategories();
   }, []);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'product_images');
+    
+    try {
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/delu6ory2/image/upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      
+      const data = await response.json();
+      console.log('Respuesta de Cloudinary:', data);
+      setImageUrl(data.secure_url);
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      setError('Error al subir la imagen');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,12 +73,16 @@ const AddProductPage: React.FC = () => {
       price,
       stock,
       categoryId,
+      image: imageUrl // Incluimos la URL de la imagen
     };
 
+    console.log('Producto a guardar:', newProduct); // Agrega este log
     try {
       setLoading(true);
-      await ProductService.createProduct(newProduct);  
-      navigate('/products');  
+      await ProductService.createProduct(newProduct);
+      //const savedProduct = await ProductService.createProduct(newProduct);
+      //console.log('Producto guardado:', savedProduct); // Y este log
+      navigate('/products');
     } catch (error) {
       setError('Error al agregar el producto');
       console.error('Error al agregar el producto:', error);
@@ -95,6 +129,41 @@ const AddProductPage: React.FC = () => {
               />
             </div>
 
+            {/* Campo de imagen nuevo */}
+            <div className="input_group">
+              <label className="form_label" htmlFor="image">
+                Imagen del Producto
+              </label>
+              <div className="flex flex-col items-center gap-4">
+                {imageUrl && (
+                  <img 
+                    src={imageUrl} 
+                    alt="Vista previa" 
+                    className="w-32 h-32 object-cover rounded-lg"
+                  />
+                )}
+                <div className="relative w-full">
+                  <input
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    disabled={uploading}
+                  />
+                  <label
+                    htmlFor="image"
+                    className="flex items-center justify-center gap-2 px-4 py-2 
+                             bg-gray-100 text-gray-700 rounded-full cursor-pointer 
+                             hover:bg-gray-200 transition-colors w-full border border-gray-300"
+                  >
+                    <Upload size={20} />
+                    {uploading ? 'Subiendo...' : imageUrl ? 'Cambiar Imagen' : 'Subir Imagen'}
+                  </label>
+                </div>
+              </div>
+            </div>
+
             <div className="input_group">
               <label className="form_label" htmlFor="price">
                 Precio
@@ -125,7 +194,6 @@ const AddProductPage: React.FC = () => {
               />
             </div>
 
-            {/* Cambiar el input para seleccionar la categoría */}
             <div className="input_group">
               <label className="form_label" htmlFor="categoryId">
                 Categoría
@@ -150,9 +218,9 @@ const AddProductPage: React.FC = () => {
               <button 
                 className="button_save" 
                 type="submit" 
-                disabled={loading}
+                disabled={loading || uploading}
               >
-                {loading ? 'Cargando...' : 'Guardar Producto'}
+                {loading ? 'Guardando...' : 'Guardar Producto'}
               </button>
               <button 
                 className="button_cancel"

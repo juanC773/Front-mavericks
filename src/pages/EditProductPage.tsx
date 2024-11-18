@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ProductService from '../services/ProductService';
 import { Product } from '../types/Product';
 import PageTitle from '../components/PageTitle';
+import { Upload } from 'lucide-react';
 import '../styles/forms.css';
 
 const EditProductPage: React.FC = () => {
@@ -11,6 +12,7 @@ const EditProductPage: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,6 +29,39 @@ const EditProductPage: React.FC = () => {
 
     fetchProduct();
   }, [id]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !product) return;
+
+    setUploading(true);
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'product_images');
+    
+    try {
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/delu6ory2/image/upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      
+      const data = await response.json();
+      console.log('Respuesta de Cloudinary:', data);
+      setProduct({
+        ...product,
+        image: data.secure_url
+      });
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      setError('Error al subir la imagen');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -108,6 +143,41 @@ const EditProductPage: React.FC = () => {
                 />
               </div>
 
+              {/* Campo de imagen nuevo */}
+              <div className="input_group">
+                <label className="form_label" htmlFor="image">
+                  Imagen del Producto
+                </label>
+                <div className="flex flex-col items-center gap-4">
+                  {product.image && (
+                    <img 
+                      src={product.image} 
+                      alt="Vista previa" 
+                      className="w-32 h-32 object-cover rounded-lg"
+                    />
+                  )}
+                  <div className="relative w-full">
+                    <input
+                      type="file"
+                      id="image"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      disabled={uploading}
+                    />
+                    <label
+                      htmlFor="image"
+                      className="flex items-center justify-center gap-2 px-4 py-2 
+                               bg-gray-100 text-gray-700 rounded-full cursor-pointer 
+                               hover:bg-gray-200 transition-colors w-full border border-gray-300"
+                    >
+                      <Upload size={20} />
+                      {uploading ? 'Subiendo...' : product.image ? 'Cambiar Imagen' : 'Subir Imagen'}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               <div className="input_group">
                 <label className="form_label" htmlFor="price">
                   Precio
@@ -160,7 +230,7 @@ const EditProductPage: React.FC = () => {
                 <button 
                   className="button_save" 
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || uploading}
                 >
                   {loading ? 'Guardando...' : 'Guardar Cambios'}
                 </button>
