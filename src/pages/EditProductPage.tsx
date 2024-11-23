@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProductService from '../services/ProductService';
+import CategoriesService from '../services/CategoriesService';
 import { Product } from '../types/Product';
+import { Category } from '../types/Category';
 import PageTitle from '../components/PageTitle';
 import { Upload } from 'lucide-react';
 import '../styles/forms.css';
@@ -10,24 +12,29 @@ const EditProductPage: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchData = async () => {
       try {
-        const data = await ProductService.getProductById(Number(id));
-        setProduct(data);
+        const [productData, categoriesData] = await Promise.all([
+          ProductService.getProductById(Number(id)),
+          CategoriesService.getAllCategories()
+        ]);
+        setProduct(productData);
+        setCategories(categoriesData);
       } catch (error) {
-        setError('Error al cargar el producto');
-        console.error('Error al obtener el producto:', error);
+        setError('Error al cargar los datos');
+        console.error('Error al obtener los datos:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct();
+    fetchData();
   }, [id]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,16 +71,21 @@ const EditProductPage: React.FC = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     if (product) {
-      const value = e.target.type === 'number' 
-        ? Number(e.target.value)
-        : e.target.value;
+      const { name, value, type } = e.target;
+      
+      let parsedValue: string | number = value;
+      
+      // Convertir a número si el campo es numérico
+      if (type === 'number' || name === 'categoryId') {
+        parsedValue = Number(value);
+      }
       
       setProduct({
         ...product,
-        [e.target.name]: value,
+        [name]: parsedValue,
       });
     }
   };
@@ -83,7 +95,12 @@ const EditProductPage: React.FC = () => {
     if (product) {
       try {
         setLoading(true);
-        await ProductService.updateProduct(Number(id), product);
+        // Asegurarse de que categoryId sea un número antes de enviar
+        const updatedProduct = {
+          ...product,
+          categoryId: Number(product.categoryId)
+        };
+        await ProductService.updateProduct(Number(id), updatedProduct);
         navigate('/products');
       } catch (error) {
         setError('Error al actualizar el producto');
@@ -143,7 +160,6 @@ const EditProductPage: React.FC = () => {
                 />
               </div>
 
-              {/* Campo de imagen nuevo */}
               <div className="input_group">
                 <label className="form_label" htmlFor="image">
                   Imagen del Producto
@@ -212,18 +228,23 @@ const EditProductPage: React.FC = () => {
 
               <div className="input_group">
                 <label className="form_label" htmlFor="categoryId">
-                  ID Categoría
+                  Categoría
                 </label>
-                <input
+                <select
                   className="form_input"
-                  type="number"
                   id="categoryId"
                   name="categoryId"
                   value={product.categoryId}
                   onChange={handleChange}
-                  placeholder="Ingresa el ID de la categoría"
                   required
-                />
+                >
+                  <option value="">Selecciona una categoría</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="button_group">
