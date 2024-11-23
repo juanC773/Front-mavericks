@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import ProductService from '../services/ProductService';
+import CategoriesService from '../services/CategoriesService';
 import { Product } from '../types/Product';
+import { Category } from '../types/Category';
 import PageTitle from '../components/PageTitle';
 import { 
   PlusCircle, 
@@ -19,6 +21,7 @@ import { addItem } from '../store/cartSlice';
 
 const ProductPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,22 +31,25 @@ const ProductPage: React.FC = () => {
   const [maxPrice, setMaxPrice] = useState<string>('');
   const dispatch = useDispatch();
 
-  const fetchProducts = async (params = {}) => {
+  const fetchData = async (params = {}) => {
     setLoading(true);
     try {
-      const data = await ProductService.searchProducts(params);
-      console.log('Productos recuperados:', data); // Agrega este log
-      setProducts(data);
+      const [productsData, categoriesData] = await Promise.all([
+        ProductService.searchProducts(params),
+        CategoriesService.getAllCategories()
+      ]);
+      setProducts(productsData);
+      setCategories(categoriesData);
     } catch (error) {
-      setError('Error al cargar los productos');
-      console.error('Error al obtener los productos:', error);
+      setError('Error al cargar los datos');
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchData();
   }, []);
 
   const handleSearch = async () => {
@@ -54,7 +60,7 @@ const ProductPage: React.FC = () => {
       minPrice: minPrice ? Number(minPrice) : undefined,
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
     };
-    await fetchProducts(params);
+    await fetchData(params);
   };
 
   const handleDelete = async (id: number) => {
@@ -71,6 +77,11 @@ const ProductPage: React.FC = () => {
 
   const handleAddToCart = (product: Product) => {
     dispatch(addItem({ product, quantity: 1 }));
+  };
+
+  const getCategoryName = (categoryId: number) => {
+    const category = categories.find(cat => cat.id === categoryId);
+    return category ? category.name : 'Categoría no encontrada';
   };
 
   if (loading) {
@@ -121,24 +132,24 @@ const ProductPage: React.FC = () => {
             </div>
 
             {/* Filtros de precio */}
-<div className="flex flex-col lg:flex-row gap-2">
-  <input
-    type="number"
-    placeholder="Precio mínimo"
-    value={minPrice}
-    onChange={(e) => setMinPrice(e.target.value)}
-    className="w-full lg:w-40 px-3 py-2 rounded-full border border-gray-300 
-              focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-  />
-  <input
-    type="number"
-    placeholder="Precio máximo"
-    value={maxPrice}
-    onChange={(e) => setMaxPrice(e.target.value)}
-    className="w-full lg:w-40 px-3 py-2 rounded-full border border-gray-300 
-              focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-  />
-</div>
+            <div className="flex flex-col lg:flex-row gap-2">
+              <input
+                type="number"
+                placeholder="Precio mínimo"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                className="w-full lg:w-40 px-3 py-2 rounded-full border border-gray-300 
+                          focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+              <input
+                type="number"
+                placeholder="Precio máximo"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                className="w-full lg:w-40 px-3 py-2 rounded-full border border-gray-300 
+                          focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
 
             {/* Selector de ordenamiento */}
             <select
@@ -194,18 +205,16 @@ const ProductPage: React.FC = () => {
                 className="bg-white rounded-3xl shadow-md overflow-hidden border border-gray-100
                          transition-all duration-200 hover:shadow-xl"
               >
-                
-
                 <div className="w-full h-64 bg-gray-100 overflow-hidden group">
-  <img 
-    src={product.image || "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Sin+Imagen"} 
-    alt={product.name} 
-    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-    onError={(e) => {
-      e.currentTarget.src = "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Error+de+Imagen";
-    }}
-  />
-</div>
+                  <img 
+                    src={product.image || "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Sin+Imagen"} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Error+de+Imagen";
+                    }}
+                  />
+                </div>
 
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-2 truncate">
@@ -231,7 +240,7 @@ const ProductPage: React.FC = () => {
                       <Tag size={16} className="text-gray-400" />
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs
                                      bg-gray-100 text-gray-600">
-                        Categoría {product.categoryId}
+                        {getCategoryName(product.categoryId)}
                       </span>
                     </div>
                   </div>
