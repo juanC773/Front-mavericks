@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store'; // Importar RootState
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart } from 'lucide-react';
 import '../styles/navbar.css';
-import logo from "../img/logo_2.png";
+import logo from '../img/logo_2.png';
 
 function NavBar() {
   // Usar useSelector para acceder al estado del carrito en Redux
@@ -20,14 +20,14 @@ function NavBar() {
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (!target.closest("#user-menu-toggle") && !target.closest("#user-menu")) {
+      if (!target.closest('#user-menu-toggle') && !target.closest('#user-menu')) {
         setMenuVisible(false);
       }
     };
 
-    window.addEventListener("click", handleOutsideClick);
+    window.addEventListener('click', handleOutsideClick);
     return () => {
-      window.removeEventListener("click", handleOutsideClick);
+      window.removeEventListener('click', handleOutsideClick);
     };
   }, []);
 
@@ -36,9 +36,15 @@ function NavBar() {
       <div className="container box-border mx-auto flex items-center justify-between">
         {/* Menú izquierdo */}
         <div className="flex space-x-10">
-          <a className="init text-lg" href="#Iniciar sesión">Inicio</a>
-          <a className="order text-lg" href="#Hacer pedido">Hacer pedido</a>
-          <a className="contact text-lg" href="#contacto">Contacto</a>
+          <a className="init text-lg" href="#Iniciar sesión">
+            Inicio
+          </a>
+          <a className="order text-lg" href="#Hacer pedido">
+            Hacer pedido
+          </a>
+          <a className="contact text-lg" href="#contacto">
+            Contacto
+          </a>
         </div>
 
         {/* Logo */}
@@ -57,8 +63,12 @@ function NavBar() {
               </span>
             )}
           </Link>
-          <a className="init text-lg" href="#Iniciar_sesion">Iniciar sesión</a>
-          <a className="register text-lg" href="#Registrarse">Registrarse</a>
+          <a className="init text-lg" href="#Iniciar_sesion">
+            Iniciar sesión
+          </a>
+          <a className="register text-lg" href="#Registrarse">
+            Registrarse
+          </a>
 
           {/* Menú de usuario */}
           <div className="relative">
@@ -74,8 +84,12 @@ function NavBar() {
                 id="user-menu"
                 className="dropdown-menu absolute left-0 mt-2 bg-white shadow-lg rounded-lg text-gray-700"
               >
-                <a href="#info" className="block px-4 py-2 hover:bg-gray-200">Información</a>
-                <a href="#logout" className="block px-4 py-2 hover:bg-gray-200">Cerrar sesión</a>
+                <a href="#info" className="block px-4 py-2 hover:bg-gray-200">
+                  Información
+                </a>
+                <a href="#logout" className="block px-4 py-2 hover:bg-gray-200">
+                  Cerrar sesión
+                </a>
               </div>
             )}
           </div>

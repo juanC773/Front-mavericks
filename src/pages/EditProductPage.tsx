@@ -22,7 +22,7 @@ const EditProductPage: React.FC = () => {
       try {
         const [productData, categoriesData] = await Promise.all([
           ProductService.getProductById(Number(id)),
-          CategoriesService.getAllCategories()
+          CategoriesService.getAllCategories(),
         ]);
         setProduct(productData);
         setCategories(categoriesData);
@@ -42,25 +42,22 @@ const EditProductPage: React.FC = () => {
     if (!file || !product) return;
 
     setUploading(true);
-    
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'product_images');
-    
+
     try {
-      const response = await fetch(
-        'https://api.cloudinary.com/v1_1/delu6ory2/image/upload',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
-      
+      const response = await fetch('https://api.cloudinary.com/v1_1/delu6ory2/image/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
       const data = await response.json();
       console.log('Respuesta de Cloudinary:', data);
       setProduct({
         ...product,
-        image: data.secure_url
+        image: data.secure_url,
       });
     } catch (error) {
       console.error('Error al subir la imagen:', error);
@@ -75,14 +72,14 @@ const EditProductPage: React.FC = () => {
   ) => {
     if (product) {
       const { name, value, type } = e.target;
-      
+
       let parsedValue: string | number = value;
-      
+
       // Convertir a número si el campo es numérico
       if (type === 'number' || name === 'categoryId') {
         parsedValue = Number(value);
       }
-      
+
       setProduct({
         ...product,
         [name]: parsedValue,
@@ -98,7 +95,7 @@ const EditProductPage: React.FC = () => {
         // Asegurarse de que categoryId sea un número antes de enviar
         const updatedProduct = {
           ...product,
-          categoryId: Number(product.categoryId)
+          categoryId: Number(product.categoryId),
         };
         await ProductService.updateProduct(Number(id), updatedProduct);
         navigate('/products');
@@ -122,11 +119,11 @@ const EditProductPage: React.FC = () => {
   return (
     <section>
       <PageTitle title="Editar Producto" />
-      
+
       <div className="flex justify-center box-border px-20 py-10">
         <div className="container_create">
           {error && <p className="text-red-500 mb-4">{error}</p>}
-          
+
           {product && (
             <form onSubmit={handleSubmit}>
               <div className="input_group">
@@ -166,9 +163,9 @@ const EditProductPage: React.FC = () => {
                 </label>
                 <div className="flex flex-col items-center gap-4">
                   {product.image && (
-                    <img 
-                      src={product.image} 
-                      alt="Vista previa" 
+                    <img
+                      src={product.image}
+                      alt="Vista previa"
                       className="w-32 h-32 object-cover rounded-lg"
                     />
                   )}
@@ -188,7 +185,11 @@ const EditProductPage: React.FC = () => {
                                hover:bg-gray-200 transition-colors w-full border border-gray-300"
                     >
                       <Upload size={20} />
-                      {uploading ? 'Subiendo...' : product.image ? 'Cambiar Imagen' : 'Subir Imagen'}
+                      {uploading
+                        ? 'Subiendo...'
+                        : product.image
+                          ? 'Cambiar Imagen'
+                          : 'Subir Imagen'}
                     </label>
                   </div>
                 </div>
@@ -248,14 +249,10 @@ const EditProductPage: React.FC = () => {
               </div>
 
               <div className="button_group">
-                <button 
-                  className="button_save" 
-                  type="submit"
-                  disabled={loading || uploading}
-                >
+                <button className="button_save" type="submit" disabled={loading || uploading}>
                   {loading ? 'Guardando...' : 'Guardar Cambios'}
                 </button>
-                <button 
+                <button
                   className="button_cancel"
                   type="button"
                   onClick={() => navigate('/products')}

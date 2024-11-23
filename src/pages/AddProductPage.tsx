@@ -18,7 +18,7 @@ const AddProductPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [uploading, setUploading] = useState(false);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const AddProductPage: React.FC = () => {
         console.error('Error al obtener las categorías:', error);
       }
     };
-  
+
     fetchCategories();
   }, []);
 
@@ -40,20 +40,17 @@ const AddProductPage: React.FC = () => {
     if (!file) return;
 
     setUploading(true);
-    
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'product_images');
-    
+
     try {
-      const response = await fetch(
-        'https://api.cloudinary.com/v1_1/delu6ory2/image/upload',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
-      
+      const response = await fetch('https://api.cloudinary.com/v1_1/delu6ory2/image/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
       const data = await response.json();
       console.log('Respuesta de Cloudinary:', data);
       setImageUrl(data.secure_url);
@@ -67,14 +64,14 @@ const AddProductPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const newProduct = {
       name,
       description,
       price,
       stock,
       categoryId,
-      image: imageUrl // Incluimos la URL de la imagen
+      image: imageUrl, // Incluimos la URL de la imagen
     };
 
     console.log('Producto a guardar:', newProduct); // Agrega este log
@@ -95,11 +92,11 @@ const AddProductPage: React.FC = () => {
   return (
     <section>
       <PageTitle title="Agregar Producto" />
-      
+
       <div className="flex justify-center box-border px-20 py-10">
         <div className="container_create">
           {error && <p className="text-red-500 mb-4">{error}</p>}
-          
+
           <form onSubmit={handleSubmit}>
             <div className="input_group">
               <label className="form_label" htmlFor="name">
@@ -137,9 +134,9 @@ const AddProductPage: React.FC = () => {
               </label>
               <div className="flex flex-col items-center gap-4">
                 {imageUrl && (
-                  <img 
-                    src={imageUrl} 
-                    alt="Vista previa" 
+                  <img
+                    src={imageUrl}
+                    alt="Vista previa"
                     className="w-32 h-32 object-cover rounded-lg"
                   />
                 )}
@@ -216,18 +213,10 @@ const AddProductPage: React.FC = () => {
             </div>
 
             <div className="button_group">
-              <button 
-                className="button_save" 
-                type="submit" 
-                disabled={loading || uploading}
-              >
+              <button className="button_save" type="submit" disabled={loading || uploading}>
                 {loading ? 'Guardando...' : 'Guardar Producto'}
               </button>
-              <button 
-                className="button_cancel"
-                type="button"
-                onClick={() => navigate('/products')}
-              >
+              <button className="button_cancel" type="button" onClick={() => navigate('/products')}>
                 Cancelar
               </button>
             </div>

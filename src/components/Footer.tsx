@@ -6,15 +6,15 @@ const Footer = () => {
   return (
     <footer className="relative w-full bg-[#FAF9F6] min-h-[650px] flex items-center justify-center">
       {/* Background images */}
-      <div 
+      <div
         className="absolute inset-0 bg-no-repeat"
         style={{
           backgroundImage: `url(${pan1}), url(${pan2})`,
           backgroundPosition: 'left bottom, right bottom',
-          backgroundSize: '450px 300px, 450px 300px'
+          backgroundSize: '450px 300px, 450px 300px',
         }}
       />
-      
+
       {/* Content container */}
       <div className="relative w-full max-w-5xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 mx-16">

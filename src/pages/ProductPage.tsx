@@ -6,16 +6,16 @@ import CategoriesService from '../services/CategoriesService';
 import { Product } from '../types/Product';
 import { Category } from '../types/Category';
 import PageTitle from '../components/PageTitle';
-import { 
-  PlusCircle, 
-  Package, 
-  DollarSign, 
-  BoxIcon, 
-  Tag, 
-  Edit2, 
-  Trash2, 
-  ShoppingCart, 
-  Search, 
+import {
+  PlusCircle,
+  Package,
+  DollarSign,
+  BoxIcon,
+  Tag,
+  Edit2,
+  Trash2,
+  ShoppingCart,
+  Search,
 } from 'lucide-react';
 import { addItem } from '../store/cartSlice';
 
@@ -36,7 +36,7 @@ const ProductPage: React.FC = () => {
     try {
       const [productsData, categoriesData] = await Promise.all([
         ProductService.searchProducts(params),
-        CategoriesService.getAllCategories()
+        CategoriesService.getAllCategories(),
       ]);
       setProducts(productsData);
       setCategories(categoriesData);
@@ -67,7 +67,7 @@ const ProductPage: React.FC = () => {
     if (window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
       try {
         await ProductService.deleteProduct(id);
-        setProducts(products.filter(product => product.idProduct !== id));
+        setProducts(products.filter((product) => product.idProduct !== id));
       } catch (error) {
         setError('Error al eliminar el producto');
         console.error('Error al eliminar el producto:', error);
@@ -80,7 +80,7 @@ const ProductPage: React.FC = () => {
   };
 
   const getCategoryName = (categoryId: number) => {
-    const category = categories.find(cat => cat.id === categoryId);
+    const category = categories.find((cat) => cat.id === categoryId);
     return category ? category.name : 'Categoría no encontrada';
   };
 
@@ -108,9 +108,11 @@ const ProductPage: React.FC = () => {
         {/* Sección superior con botón de agregar y filtros */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
           <Link to="/products/add">
-            <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-orange-600 
+            <button
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-orange-600 
                            text-white font-semibold rounded-full shadow-lg hover:from-orange-500 
-                           hover:to-orange-700 transition-all duration-200 hover:scale-105">
+                           hover:to-orange-700 transition-all duration-200 hover:scale-105"
+            >
               <PlusCircle size={20} />
               Agregar Nuevo Producto
             </button>
@@ -128,7 +130,10 @@ const ProductPage: React.FC = () => {
                 className="w-full lg:w-64 px-4 py-2 pl-10 rounded-full border border-gray-300 
                           focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
             </div>
 
             {/* Filtros de precio */}
@@ -200,26 +205,28 @@ const ProductPage: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product: Product) => (
-              <article 
-                key={product.idProduct} 
+              <article
+                key={product.idProduct}
                 className="bg-white rounded-3xl shadow-md overflow-hidden border border-gray-100
                          transition-all duration-200 hover:shadow-xl"
               >
                 <div className="w-full h-64 bg-gray-100 overflow-hidden group">
-                  <img 
-                    src={product.image || "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Sin+Imagen"} 
-                    alt={product.name} 
+                  <img
+                    src={
+                      product.image ||
+                      'https://via.placeholder.com/600x400/eeeeee/cccccc?text=Sin+Imagen'
+                    }
+                    alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     onError={(e) => {
-                      e.currentTarget.src = "https://via.placeholder.com/600x400/eeeeee/cccccc?text=Error+de+Imagen";
+                      e.currentTarget.src =
+                        'https://via.placeholder.com/600x400/eeeeee/cccccc?text=Error+de+Imagen';
                     }}
                   />
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2 truncate">
-                    {product.name}
-                  </h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2 truncate">{product.name}</h3>
                   <p className="text-gray-600 mb-4 text-sm overflow-hidden text-ellipsis">
                     {product.description}
                   </p>
@@ -232,27 +239,29 @@ const ProductPage: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <BoxIcon size={16} className="text-gray-400" />
-                      <span className="text-gray-500">
-                        {product.stock} unidades disponibles
-                      </span>
+                      <span className="text-gray-500">{product.stock} unidades disponibles</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <Tag size={16} className="text-gray-400" />
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs
-                                     bg-gray-100 text-gray-600">
+                      <span
+                        className="inline-flex items-center px-3 py-1 rounded-full text-xs
+                                     bg-gray-100 text-gray-600"
+                      >
                         {getCategoryName(product.categoryId)}
                       </span>
                     </div>
                   </div>
                   <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
                     <Link to={`/products/edit/${product.idProduct}`}>
-                      <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-blue-600 
-                                       rounded-full border border-blue-600 hover:bg-blue-50 transition-colors">
+                      <button
+                        className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-blue-600 
+                                       rounded-full border border-blue-600 hover:bg-blue-50 transition-colors"
+                      >
                         <Edit2 size={16} />
                         Editar
                       </button>
                     </Link>
-                    <button 
+                    <button
                       className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-red-600 
                                rounded-full border border-red-600 hover:bg-red-50 transition-colors"
                       onClick={() => {

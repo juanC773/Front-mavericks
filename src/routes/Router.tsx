@@ -9,12 +9,18 @@ import Layout from '../components/Layout';
 import Cart from '../components/Cart';
 
 const router = createRoutesFromElements(
-    <Route element={<Layout><Outlet /></Layout>}>
-        <Route path="/" element={<FirstPage />} />
-        <Route path="/products" element={<ProductPage />} />
-        <Route path="/products/add" element={<AddProductPage />} />
-        <Route path="/products/edit/:id" element={<EditProductPage />} />
-        <Route path="/cart" element={<Cart />} />
-    </Route>
+  <Route
+    element={
+      <Layout>
+        <Outlet />
+      </Layout>
+    }
+  >
+    <Route path="/" element={<FirstPage />} />
+    <Route path="/products" element={<ProductPage />} />
+    <Route path="/products/add" element={<AddProductPage />} />
+    <Route path="/products/edit/:id" element={<EditProductPage />} />
+    <Route path="/cart" element={<Cart />} />
+  </Route>
 );
 export const routes = createBrowserRouter(router);

@@ -1,96 +1,94 @@
-
 .page-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  .container_create {
-    width: 100%;
-    max-width: 600px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .container_create:hover {
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 24px;
-    color: #4A221A;
-  }
-  
-  .error {
-    color: red;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-  }
-  
-  .input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #4A221A;
-  }
-  
-  .input-group input,
-  .input-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px dashed #cccccc;
-    border-radius: 15px;
-    box-sizing: border-box;
-  }
-  
-  .input-group input:focus,
-  .input-group textarea:focus {
-    outline: none;
-    border-color: #4A221A;
-  }
-  
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .button_save,
-  .button_delete {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .button_save {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .button_save:hover {
-    background-color: #45a049;
-  }
-  
-  .button_delete {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .button_delete:hover {
-    background-color: #e53935;
-  }
-  
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.container_create {
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.container_create:hover {
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 24px;
+  color: #4a221a;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #4a221a;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed #cccccc;
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: #4a221a;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button_save,
+.button_delete {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button_save {
+  background-color: #4caf50;
+  color: white;
+}
+
+.button_save:hover {
+  background-color: #45a049;
+}
+
+.button_delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.button_delete:hover {
+  background-color: #e53935;
+}
