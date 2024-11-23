@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import { Upload } from 'lucide-react';
 import '../styles/forms.css';
+import { Category } from '../types/Category';
 
 const AddProductPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const AddProductPage: React.FC = () => {
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
   const [categoryId, setCategoryId] = useState(0);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
