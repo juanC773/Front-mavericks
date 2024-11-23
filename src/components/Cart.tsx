@@ -1,11 +1,16 @@
 import React from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
+import { useCheckout } from '../hooks/useCheckout';
+import CheckoutForm from './CheckoutForm';
 import { addItem, removeItem, clearCart } from '../store/cartSlice';
 import { Link } from 'react-router-dom';
 
 const Cart: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const { handleCheckout, loading, error } = useCheckout(cartItems, 'user123');
+  const [showCheckout, setShowCheckout] = useState(false);
   const dispatch = useDispatch();
 
   if (cartItems.length === 0) {
@@ -41,7 +46,7 @@ const Cart: React.FC = () => {
         </button>
       </Link>
 
-      <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mb-20 mt-10   hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+      <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mb-20 mt-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Carrito de Compras</h2>
 
         <ul className="divide-y divide-gray-200">
@@ -104,15 +109,39 @@ const Cart: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex justify-between">
           <button
             onClick={() => dispatch(clearCart())}
             className="px-4 py-2 bg-red-500 text-white font-semibold rounded-md shadow hover:bg-red-600 transition"
           >
             Vaciar Carrito
           </button>
+
+          <button
+            onClick={() => setShowCheckout(true)}
+            className="px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow hover:bg-green-600 transition"
+            disabled={cartItems.length === 0}
+          >
+            Checkout
+          </button>
         </div>
       </div>
+
+      {showCheckout && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg max-w-xl w-full">
+            <h2 className="text-2xl font-bold mb-4">Checkout</h2>
+            {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
+            <CheckoutForm onSubmit={handleCheckout} loading={loading} />
+            <button
+              onClick={() => setShowCheckout(false)}
+              className="mt-4 text-gray-600 hover:text-gray-800"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
