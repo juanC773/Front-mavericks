@@ -16,11 +16,20 @@ function NavBar() {
   // Estado para manejar la visibilidad del menú desplegable
   const [menuVisible, setMenuVisible] = useState(false);
   
-
-  // Esto es para mandar al usuario a la página de inicio del back mvc
+  // Manejar redirecciones al backend
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.location.href = `${import.meta.env.VITE_API_URL}/home`;
+  };
+
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/login`;
+  };
+
+  const handleRegisterClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = `${import.meta.env.VITE_API_URL}/admin/create-user`;
   };
 
   // Manejar clic fuera del menú para cerrarlo
@@ -46,9 +55,7 @@ function NavBar() {
           <a className="init text-lg" href="#" onClick={handleHomeClick}>
             Inicio
           </a>
-          <a className="order text-lg" href="#Hacer pedido">
-            Hacer pedido
-          </a>
+          
           <a className="contact text-lg" href="#contacto">
             Contacto
           </a>
@@ -70,10 +77,10 @@ function NavBar() {
               </span>
             )}
           </Link>
-          <a className="init text-lg" href="#Iniciar_sesion">
+          <a className="init text-lg" href="#" onClick={handleLoginClick}>
             Iniciar sesión
           </a>
-          <a className="register text-lg" href="#Registrarse">
+          <a className="register text-lg" href="#" onClick={handleRegisterClick}>
             Registrarse
           </a>
 
