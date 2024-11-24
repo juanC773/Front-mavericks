@@ -1,4 +1,3 @@
-import React from 'react';
 import pan1 from '../img/pan_1_fondo.png';
 import pan2 from '../img/pan_2_fondo.png';
 
