@@ -9,6 +9,8 @@ import OrderSuccessPage from '../pages/OrderSuccessPage';
 import AuthTestPage from '../pages/AuthTestPage';
 import Layout from '../components/Layout';
 import Cart from '../components/Cart';
+import OrdersPage from '../pages/OrdersPage';
+import OrderDetailsPage from '../pages/OrdersDetailPage';
 
 const router = createRoutesFromElements(
   <Route
@@ -25,6 +27,8 @@ const router = createRoutesFromElements(
     <Route path="/cart" element={<Cart />} />
     <Route path="/order-success" element={<OrderSuccessPage />} />
     <Route path="/auth-test" element={<AuthTestPage />} />
+    <Route path="/orders" element={<OrdersPage />} />
+    <Route path="/orders/:id" element={<OrderDetailsPage />} />
   </Route>
 );
 
