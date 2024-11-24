@@ -1,18 +1,30 @@
-import axios from './axios';  // Importar la instancia de axios
+import axios from './axios';
 import { Category } from '../types/Category';
 
-// Tipar la respuesta de los productos
 const CategoriesService = {
-  // Método para obtener todos los productos
   getAllCategories: async (): Promise<Category[]> => {
     try {
-      const response = await axios.get('/categories/all');
-      return response.data;
-    } catch (error) {
-      console.error('Error al obtener las categorías', error);
-      throw error;
-    }
-  }
-}
+      const { data } = await axios.get<Category[]>('/categories/all');
+      console.log('Datos recibidos de la API:', data);
 
-export default CategoriesService
+      // Verificar si data es undefined o null
+      if (!data) {
+        console.error('No se recibieron datos de la API');
+        return [];
+      }
+
+      // Asegurarnos de que data es un array
+      if (!Array.isArray(data)) {
+        console.error('Los datos recibidos no son un array:', data);
+        return [];
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error al obtener las categorías:', error);
+      return []; // Retornamos un array vacío en lugar de lanzar el error
+    }
+  },
+};
+
+export default CategoriesService;

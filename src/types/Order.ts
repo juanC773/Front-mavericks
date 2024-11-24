@@ -1,9 +1,24 @@
-import { OrderItem } from "./OrderItem";
+// src/types/Order.ts
+import { Product } from './Product';
+
+export interface CartItem {
+  id: number;
+  productId: number;
+  quantity: number;
+  priceAtPurchase: number;
+  product: Product;
+}
 
 export interface Order {
-    id: string;
-    items: OrderItem[];
-    totalPrice: number;
-    totalItems: number;
-    orderDate: string;
+  id: number;
+  userId: string;
+  date: string;
+  state: string;
+  description: string;
+  orderAddress: string;
+  cartItems: CartItem[];
+  paymentMethod: {
+    id: number;
+    name: string;
+  };
 }

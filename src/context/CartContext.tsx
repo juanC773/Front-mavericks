@@ -22,8 +22,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const addItemToCart = (product: Product, quantity: number) => {
     console.log('Adding to cart:', cart);
     setCart((prevCart) => {
-      const existingItemIndex = prevCart.findIndex((item) => item.product.idProduct === product.idProduct);
-  
+      const existingItemIndex = prevCart.findIndex(
+        (item) => item.product.idProduct === product.idProduct
+      );
+
       if (existingItemIndex >= 0) {
         const updatedCart = [...prevCart];
         updatedCart[existingItemIndex].quantity += quantity;
