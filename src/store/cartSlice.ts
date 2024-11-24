@@ -21,10 +21,20 @@ const cartSlice = createSlice({
   reducers: {
     addItem: (state, action: PayloadAction<{ product: Product; quantity: number }>) => {
       const { product, quantity } = action.payload;
-      const existingItem = state.items.find((item) => item.product.idProduct === product.idProduct);
+      const existingItem = state.items.find((item) => item.product.id === product.id);
+
       if (existingItem) {
-        existingItem.quantity += quantity;
+        const totalQuantity = existingItem.quantity + quantity;
+        if (totalQuantity > product.stock) {
+          console.warn('Cannot add more items than available in stock');
+          return;
+        }
+        existingItem.quantity = totalQuantity;
       } else {
+        if (quantity > product.stock) {
+          console.warn('Cannot add more items than available in stock');
+          return;
+        }
         state.items.push({ product, quantity });
       }
     },
