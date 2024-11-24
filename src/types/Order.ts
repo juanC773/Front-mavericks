@@ -6,19 +6,23 @@ export interface CartItem {
   productId: number;
   quantity: number;
   priceAtPurchase: number;
-  product: Product;
+}
+
+export interface PayMethod {
+  id: number;
+  type: string;
+  name: string;
+  description: string;
 }
 
 export interface Order {
   id: number;
-  userId: string;
+  username: string;
   date: string;
   state: string;
   description: string;
   orderAddress: string;
   cartItems: CartItem[];
-  paymentMethod: {
-    id: number;
-    name: string;
-  };
+  payMethod: PayMethod; // Agregado
+  totalAmount: number;  // Agregado
 }

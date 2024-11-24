@@ -42,6 +42,9 @@ function NavBar() {
           <a className="order text-lg" href="#Hacer pedido">
             Hacer pedido
           </a>
+          <a className="order text-lg" href='#Ordenes'>
+            Ordenes
+          </a>
           <a className="contact text-lg" href="#contacto">
             Contacto
           </a>
