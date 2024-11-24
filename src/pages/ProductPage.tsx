@@ -1,8 +1,10 @@
+// src/pages/ProductPage.tsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import ProductService from '../services/ProductService';
 import CategoriesService from '../services/CategoriesService';
+import useAuth from '../hooks/useAuth';
 import { Product } from '../types/Product';
 import { Category } from '../types/Category';
 import PageTitle from '../components/PageTitle';
@@ -20,6 +22,7 @@ import {
 import { addItem } from '../store/cartSlice';
 
 const ProductPage: React.FC = () => {
+  const { isAdmin, shouldRender } = useAuth({ requiredAuth: false });
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -105,22 +108,21 @@ const ProductPage: React.FC = () => {
     <>
       <PageTitle title="Lista de Productos" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Sección superior con botón de agregar y filtros */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
-          <Link to="/products/add">
-            <button
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-orange-600 
-                           text-white font-semibold rounded-full shadow-lg hover:from-orange-500 
-                           hover:to-orange-700 transition-all duration-200 hover:scale-105"
-            >
-              <PlusCircle size={20} />
-              Agregar Nuevo Producto
-            </button>
-          </Link>
+          {shouldRender('ADMIN') && (
+            <Link to="/products/add">
+              <button
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-orange-600 
+                               text-white font-semibold rounded-full shadow-lg hover:from-orange-500 
+                               hover:to-orange-700 transition-all duration-200 hover:scale-105"
+              >
+                <PlusCircle size={20} />
+                Agregar Nuevo Producto
+              </button>
+            </Link>
+          )}
 
-          {/* Contenedor de filtros */}
           <div className="flex flex-col lg:flex-row gap-4 w-full lg:w-auto">
-            {/* Barra de búsqueda */}
             <div className="relative">
               <input
                 type="text"
@@ -136,7 +138,6 @@ const ProductPage: React.FC = () => {
               />
             </div>
 
-            {/* Filtros de precio */}
             <div className="flex flex-col lg:flex-row gap-2">
               <input
                 type="number"
@@ -156,7 +157,6 @@ const ProductPage: React.FC = () => {
               />
             </div>
 
-            {/* Selector de ordenamiento */}
             <select
               value={sortBy}
               onChange={(e) => {
@@ -171,7 +171,6 @@ const ProductPage: React.FC = () => {
               <option value="price">Precio</option>
             </select>
 
-            {/* Dirección del ordenamiento */}
             {sortBy && (
               <select
                 value={sortDirection}
@@ -184,7 +183,6 @@ const ProductPage: React.FC = () => {
               </select>
             )}
 
-            {/* Botón de búsqueda */}
             <button
               onClick={handleSearch}
               className="px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white 
@@ -196,7 +194,6 @@ const ProductPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Grid de productos */}
         {products.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
             <Package size={48} className="mx-auto mb-4" />
@@ -252,30 +249,37 @@ const ProductPage: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-                    <Link to={`/products/edit/${product.idProduct}`}>
-                      <button
-                        className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-blue-600 
-                                       rounded-full border border-blue-600 hover:bg-blue-50 transition-colors"
-                      >
-                        <Edit2 size={16} />
-                        Editar
-                      </button>
-                    </Link>
+                    {shouldRender('ADMIN') ? (
+                      <>
+                        <Link to={`/products/edit/${product.idProduct}`}>
+                          <button
+                            className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-blue-600 
+                                           rounded-full border border-blue-600 hover:bg-blue-50 transition-colors"
+                          >
+                            <Edit2 size={16} />
+                            Editar
+                          </button>
+                        </Link>
+                        <button
+                          className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-red-600 
+                                   rounded-full border border-red-600 hover:bg-red-50 transition-colors"
+                          onClick={() => {
+                            if (product.idProduct !== undefined) {
+                              handleDelete(product.idProduct);
+                            }
+                          }}
+                        >
+                          <Trash2 size={16} />
+                          Eliminar
+                        </button>
+                      </>
+                    ) : (
+                      <div className="flex-1" />
+                    )}
                     <button
-                      className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-red-600 
-                               rounded-full border border-red-600 hover:bg-red-50 transition-colors"
-                      onClick={() => {
-                        if (product.idProduct !== undefined) {
-                          handleDelete(product.idProduct);
-                        }
-                      }}
-                    >
-                      <Trash2 size={16} />
-                      Eliminar
-                    </button>
-                    <button
-                      className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-green-600 
-                               rounded-full border border-green-600 hover:bg-green-50 transition-colors"
+                      className={`flex items-center gap-1 px-4 py-2 text-sm font-medium text-green-600 
+                               rounded-full border border-green-600 hover:bg-green-50 transition-colors
+                               ${!isAdmin ? 'ml-auto' : ''}`}
                       onClick={() => handleAddToCart(product)}
                     >
                       <ShoppingCart size={16} />

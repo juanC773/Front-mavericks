@@ -6,6 +6,7 @@ import AuthService from '../services/authService';
 interface UseAuthOptions {
   requiredRole?: 'ADMIN' | 'CLIENTE';
   redirectTo?: string;
+  requiredAuth?: boolean;
 }
 
 interface AuthState {
