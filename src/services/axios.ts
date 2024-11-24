@@ -1,6 +1,6 @@
 // src/axios.ts
 import axios from 'axios';
-import AuthService from './AuthService';
+import AuthService from './authService';
 
 const instance = axios.create({
   baseURL: 'http://localhost:8080/mavericks',
@@ -8,13 +8,14 @@ const instance = axios.create({
     'X-Requested-With': 'XMLHttpRequest',
     Accept: 'application/json',
   },
-  withCredentials: true, // Importante para las cookies
+  withCredentials: true, // Mantenemos esto para recibir la cookie del backend
 });
 
 // Request interceptor
 instance.interceptors.request.use(
   (config) => {
     const token = AuthService.getToken();
+    console.log('Token obtenido:', token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -28,14 +29,34 @@ instance.interceptors.request.use(
 // Response interceptor
 instance.interceptors.response.use(
   (response) => {
-    // Verifica si hay un nuevo token en los headers
+    // Intentar obtener el token de la cookie
+    const cookies = document.cookie.split(';');
+    let token = null;
+
+    // Buscar la cookie 'token'
+    for (const cookie of cookies) {
+      console.log('Cookie:', cookie);
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'token') {
+        token = value;
+        break;
+      }
+    }
+
+    // Si encontramos el token en la cookie, guardarlo en localStorage
+    if (token) {
+      AuthService.setToken(token);
+      console.log('Token guardado en localStorage desde cookie');
+    }
+
+    // También verificar si hay token renovado en los headers
     const newToken = response.headers['authorization'];
     const isTokenRenewed = response.headers['x-token-renewed'];
 
     if (isTokenRenewed && newToken) {
-      // Extrae el token del formato "Bearer token"
-      const token = newToken.replace('Bearer ', '');
-      AuthService.setToken(token);
+      const tokenValue = newToken.replace('Bearer ', '');
+      AuthService.setToken(tokenValue);
+      console.log('Token renovado guardado en localStorage');
     }
 
     return response;
@@ -45,7 +66,6 @@ instance.interceptors.response.use(
       AuthService.clearToken();
       window.location.href = '/login';
     } else if (error.response?.status === 403) {
-      // Manejo de acceso denegado
       window.location.href = '/access-denied';
     }
     return Promise.reject(error);

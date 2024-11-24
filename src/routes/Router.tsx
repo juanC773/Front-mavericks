@@ -6,6 +6,7 @@ import ProductPage from '../pages/ProductPage';
 import AddProductPage from '../pages/AddProductPage';
 import EditProductPage from '../pages/EditProductPage';
 import OrderSuccessPage from '../pages/OrderSuccessPage';
+import AuthTestPage from '../pages/AuthTestPage';
 import Layout from '../components/Layout';
 import Cart from '../components/Cart';
 
@@ -23,6 +24,8 @@ const router = createRoutesFromElements(
     <Route path="/products/edit/:id" element={<EditProductPage />} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/order-success" element={<OrderSuccessPage />} />
+    <Route path="/auth-test" element={<AuthTestPage />} />
   </Route>
 );
+
 export const routes = createBrowserRouter(router);
