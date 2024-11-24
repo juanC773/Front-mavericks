@@ -3,12 +3,12 @@ import axios from 'axios';
 import AuthService from './authService';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/mavericks',
+  baseURL: import.meta.env.VITE_API_URL, // Aquí usamos la variable de entorno que es la url del back
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     Accept: 'application/json',
   },
-  withCredentials: true, // Mantenemos esto para recibir la cookie del backend
+  withCredentials: true,
 });
 
 // Request interceptor

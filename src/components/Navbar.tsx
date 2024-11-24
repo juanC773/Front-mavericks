@@ -15,6 +15,13 @@ function NavBar() {
 
   // Estado para manejar la visibilidad del menú desplegable
   const [menuVisible, setMenuVisible] = useState(false);
+  
+
+  // Esto es para mandar al usuario a la página de inicio del back mvc
+  const handleHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = `${import.meta.env.VITE_API_URL}/home`;
+  };
 
   // Manejar clic fuera del menú para cerrarlo
   useEffect(() => {
@@ -36,7 +43,7 @@ function NavBar() {
       <div className="container box-border mx-auto flex items-center justify-between">
         {/* Menú izquierdo */}
         <div className="flex space-x-10">
-          <a className="init text-lg" href="#Iniciar sesión">
+          <a className="init text-lg" href="#" onClick={handleHomeClick}>
             Inicio
           </a>
           <a className="order text-lg" href="#Hacer pedido">
