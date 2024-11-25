@@ -22,12 +22,15 @@ instance.interceptors.request.use(
     
     if (token && AuthService.isTokenExpiringSoon()) {
       try {
-        const response = await axios.post('/api/auth/refresh', {
-          token: token
+        const response = await axios.post('/auth/refresh', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         const newToken = response.data.token;
         AuthService.setToken(newToken);
         console.log('Token renovado:', newToken);
+        toast.info('Tu sesión ha sido renovada correctamente.');
       } catch (error) {
         console.error('Error renovando token:', error);
         AuthService.clearToken();
