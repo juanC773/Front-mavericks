@@ -11,14 +11,27 @@ const Checkout: React.FC = () => {
   const [payMethodId, setPayMethodId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Validar que el carrito no esté vacío
   if (cartItems.length === 0) {
-    navigate('/cart'); // Redirigir a carrito si está vacío
+    navigate('/cart');
     return null;
   }
+
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      try {
+        const response = await axios.get('/paymethods');
+        setPaymentMethods(response.data);
+      } catch (err) {
+        setError('Error al cargar los métodos de pago.');
+      }
+    };
+
+    fetchPaymentMethods();
+  }, []);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,30 +44,31 @@ const Checkout: React.FC = () => {
     setError(null);
 
     try {
-      const orderData = {
-        username: 'cliente', 
-        date: new Date().toISOString(),
-        state: 'PENDING',
-        description: 'Nueva orden desde el frontend',
-        orderAddress: orderAddress,
-        cartItems: cartItems.map(item => ({
-          productId: item.product.idProduct,
-          quantity: item.quantity,
-        })),
-        payMethod: {
-          id: payMethodId,
-        },
-      };
+        const date = new Date();
+        date.setHours(date.getHours() - 5);
+        
+        const orderData = {
+            username: 'cliente',
+            date: date.toISOString(),
+            state: 'PENDING',
+            description: 'Nueva orden desde el frontend',
+            orderAddress: orderAddress,
+            cartItems: cartItems.map(item => ({
+            productId: item.product.idProduct,
+            quantity: item.quantity,
+            })),
+            payMethod: {
+            id: payMethodId,
+            },
+        };
 
       await axios.post('/orders/add', orderData);
 
-      // Vaciar carrito después de crear la orden
       dispatch(clearCart());
 
-      // Redirigir a la página de éxito
       setTimeout(() => {
         navigate('/order-success');
-      }, 500); // Puede agregar un pequeño retraso para que la navegación ocurra después del renderizado
+      }, 500);
     } catch (err) {
       setError('Hubo un error al procesar tu pedido. Intenta nuevamente.');
     } finally {
@@ -89,9 +103,11 @@ const Checkout: React.FC = () => {
             required
           >
             <option value="">Seleccione un método de pago</option>
-            {/* Aquí puedes mapear los métodos de pago si los tienes disponibles */}
-            <option value={1}>Tarjeta de Crédito</option>
-            <option value={2}>Paypal</option>
+            {paymentMethods.map((method) => (
+              <option key={method.id} value={method.id}>
+                {method.name}
+              </option>
+            ))}
           </select>
         </div>
 
