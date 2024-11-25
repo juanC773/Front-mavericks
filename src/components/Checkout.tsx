@@ -7,6 +7,7 @@ import axios from '../services/axios';
 import useAuth from '../hooks/useAuth';
 import BackButton from './BackButton';
 import { PayMethod } from '../types/Order';
+import PageTitle from './PageTitle';
 
 const Checkout: React.FC = () => {
   const { username } = useAuth();
@@ -85,13 +86,12 @@ const Checkout: React.FC = () => {
 
   return (
     <>
+      <PageTitle title="Checkout" />
       <div className="inline-block mt-8 ml-4">
         <BackButton to="/products" label="Volver a Productos" />
       </div>
 
-      <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Checkout</h2>
-
+      <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10 m-20">
         {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
 
         <form onSubmit={handleFormSubmit}>
