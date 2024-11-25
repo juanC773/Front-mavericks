@@ -1,5 +1,10 @@
 .container_create {
-  @apply w-full max-w-lg bg-white p-10 rounded-3xl shadow-lg;
+  width: 100%;
+  max-width: 32rem;
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .container_create:hover {

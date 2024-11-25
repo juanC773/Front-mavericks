@@ -1,9 +1,12 @@
 // src/axios.ts
 import axios from 'axios';
 import AuthService from './authService';
+import { toast } from 'react-toastify';
+
+const BACKEND_LOGIN_URL = 'http://localhost:8080/mavericks/auth/login';
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // Aquí usamos la variable de entorno que es la url del back
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     Accept: 'application/json',
@@ -13,9 +16,26 @@ const instance = axios.create({
 
 // Request interceptor
 instance.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const token = AuthService.getToken();
     console.log('Token obtenido:', token);
+    
+    if (token && AuthService.isTokenExpiringSoon()) {
+      try {
+        const response = await axios.post('/api/auth/refresh', {
+          token: token
+        });
+        const newToken = response.data.token;
+        AuthService.setToken(newToken);
+        console.log('Token renovado:', newToken);
+      } catch (error) {
+        console.error('Error renovando token:', error);
+        AuthService.clearToken();
+        window.location.href = BACKEND_LOGIN_URL;
+        return Promise.reject(error);
+      }
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -29,11 +49,10 @@ instance.interceptors.request.use(
 // Response interceptor
 instance.interceptors.response.use(
   (response) => {
-    // Intentar obtener el token de la cookie
+    // Verificar cookies
     const cookies = document.cookie.split(';');
     let token = null;
-
-    // Buscar la cookie 'token'
+    
     for (const cookie of cookies) {
       console.log('Cookie:', cookie);
       const [name, value] = cookie.trim().split('=');
@@ -43,29 +62,33 @@ instance.interceptors.response.use(
       }
     }
 
-    // Si encontramos el token en la cookie, guardarlo en localStorage
     if (token) {
       AuthService.setToken(token);
-      console.log('Token guardado en localStorage desde cookie');
+      console.log('Token guardado desde cookie:', token);
     }
 
-    // También verificar si hay token renovado en los headers
+    // Verificar token renovado
     const newToken = response.headers['authorization'];
     const isTokenRenewed = response.headers['x-token-renewed'];
 
     if (isTokenRenewed && newToken) {
       const tokenValue = newToken.replace('Bearer ', '');
       AuthService.setToken(tokenValue);
-      console.log('Token renovado guardado en localStorage');
+      console.log('Token renovado guardado:', tokenValue);
+      toast.info('Tu sesión ha sido renovada');
     }
 
     return response;
   },
   async (error) => {
     if (error.response?.status === 401) {
+      console.log('Error 401: Token inválido o expirado');
       AuthService.clearToken();
-      window.location.href = '/login';
+      toast.error('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+      window.location.href = BACKEND_LOGIN_URL;
     } else if (error.response?.status === 403) {
+      console.log('Error 403: Acceso denegado');
+      toast.error('No tienes permisos para realizar esta acción');
       window.location.href = '/access-denied';
     }
     return Promise.reject(error);

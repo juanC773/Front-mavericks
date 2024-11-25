@@ -17,7 +17,10 @@ interface AuthState {
   hasPermission: boolean;
 }
 
-const useAuth = ({ requiredRole, redirectTo = '/login' }: UseAuthOptions = {}) => {
+const useAuth = ({
+  requiredRole,
+  redirectTo = 'http://localhost:8080/mavericks/auth/login',
+}: UseAuthOptions = {}) => {
   const navigate = useNavigate();
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
@@ -38,7 +41,13 @@ const useAuth = ({ requiredRole, redirectTo = '/login' }: UseAuthOptions = {}) =
 
     if (!isAuthenticated) {
       console.log('Usuario no autenticado, redirigiendo a:', redirectTo);
-      navigate(redirectTo);
+      if (redirectTo.startsWith('http')) {
+        // Redirige a una URL absoluta
+        window.location.href = redirectTo;
+      } else {
+        // Redirige usando navigate para rutas internas
+        navigate(redirectTo);
+      }
       hasPermission = false;
     } else if (requiredRole && !roles.includes(requiredRole)) {
       console.log(`Usuario no tiene el rol requerido: ${requiredRole}`);
