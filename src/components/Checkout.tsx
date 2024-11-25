@@ -4,8 +4,10 @@ import { RootState } from '../store';
 import { useNavigate } from 'react-router-dom';
 import { clearCart } from '../store/cartSlice';
 import axios from '../services/axios';
+import useAuth from '../hooks/useAuth';
 
 const Checkout: React.FC = () => {
+  const { username } = useAuth();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [orderAddress, setOrderAddress] = useState('');
   const [payMethodId, setPayMethodId] = useState<number | null>(null);
@@ -44,23 +46,23 @@ const Checkout: React.FC = () => {
     setError(null);
 
     try {
-        const date = new Date();
-        date.setHours(date.getHours() - 5);
-        
-        const orderData = {
-            username: 'cliente',
-            date: date.toISOString(),
-            state: 'PENDING',
-            description: 'Nueva orden desde el frontend',
-            orderAddress: orderAddress,
-            cartItems: cartItems.map(item => ({
-            productId: item.product.idProduct,
-            quantity: item.quantity,
-            })),
-            payMethod: {
-            id: payMethodId,
-            },
-        };
+      const date = new Date();
+      date.setHours(date.getHours() - 5);
+
+      const orderData = {
+        username: username,
+        date: date.toISOString(),
+        state: 'PENDING',
+        description: 'Nueva orden desde el frontend',
+        orderAddress: orderAddress,
+        cartItems: cartItems.map(item => ({
+          productId: item.product.idProduct,
+          quantity: item.quantity,
+        })),
+        payMethod: {
+          id: payMethodId,
+        },
+      };
 
       await axios.post('/orders/add', orderData);
 
