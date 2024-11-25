@@ -6,6 +6,7 @@ import { clearCart } from '../store/cartSlice';
 import axios from '../services/axios';
 import useAuth from '../hooks/useAuth';
 import BackButton from './BackButton';
+import { PayMethod } from '../types/Order';
 
 const Checkout: React.FC = () => {
   const { username } = useAuth();
@@ -14,19 +15,20 @@ const Checkout: React.FC = () => {
   const [payMethodId, setPayMethodId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<PayMethod[]>([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  if (cartItems.length === 0) {
-    navigate('/cart');
-    return null;
-  }
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate('/cart');
+    }
+  }, [cartItems, navigate]);
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
-        const response = await axios.get('/paymethods');
+        const response = await axios.get<PayMethod[]>('/paymethods');
         setPaymentMethods(response.data);
       } catch (err) {
         console.log('Error fetching payment methods:', err);
