@@ -25,9 +25,16 @@ const router = createRoutesFromElements(
       </Layout>
     }
   >
-    <Route path="/" element={<FirstPage />} />
+    <Route
+      path="/"
+      element={
+        <ProtectedRoute loginUrl={BACKEND_LOGIN_URL}>
+          <FirstPage />
+        </ProtectedRoute>
+      }
+    />
     <Route path="/products" element={<ProductPage />} />
-    
+
     {/* Rutas protegidas para admin */}
     <Route
       path="/products/add"
@@ -45,7 +52,7 @@ const router = createRoutesFromElements(
         </ProtectedRoute>
       }
     />
-    
+
     {/* Rutas protegidas para usuarios autenticados */}
     <Route
       path="/cart"
@@ -81,7 +88,7 @@ const router = createRoutesFromElements(
         </ProtectedRoute>
       }
     />
-    
+
     {/* Ruta para acceso denegado */}
     <Route path="/access-denied" element={<AccessDeniedPage />} />
   </Route>
