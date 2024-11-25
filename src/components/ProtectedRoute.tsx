@@ -1,6 +1,6 @@
 // components/ProtectedRoute.tsx
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 interface ProtectedRouteProps {
@@ -14,7 +14,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredRole,
   loginUrl = 'http://localhost:8080/mavericks/auth/login'
 }) => {
-  const location = useLocation();
   const { isAuthenticated, hasRole, isLoading } = useAuth();
 
   if (isLoading) {
