@@ -2,7 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { addItem, removeItem, clearCart } from '../store/cartSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import BackButton from './BackButton';
 
 const Cart: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -18,22 +19,18 @@ const Cart: React.FC = () => {
         <p className="text-center text-black text-5xl flex justify-center mt-32 mb-14">
           El carrito está vacío.
         </p>
-        <Link to="/products" className="inline-block mb-8">
-          <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-full shadow-lg hover:from-orange-500 hover:to-orange-700 transition-all duration-200 hover:scale-105">
-            Volver a Productos
-          </button>
-        </Link>
+        <div className='inline-block mb-8'>
+          <BackButton to="/products" label="Volver a Productos" />
+        </div>
       </div>
     );
   }
 
   return (
     <>
-      <Link to="/products" className="inline-block mt-8 ml-4">
-        <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-full shadow-lg hover:from-orange-500 hover:to-orange-700 transition-all duration-200 hover:scale-105">
-          Volver a Productos
-        </button>
-      </Link>
+      <div className='inline-block mt-8 ml-4'>
+        <BackButton to="/products" label="Volver a Productos" />
+      </div>
 
       <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mb-20 mt-10 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Carrito de Compras</h2>
