@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { clearCart } from '../store/cartSlice';
 import axios from '../services/axios';
 import useAuth from '../hooks/useAuth';
+import BackButton from './BackButton';
 
 const Checkout: React.FC = () => {
   const { username } = useAuth();
@@ -79,49 +80,55 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Checkout</h2>
+    <>
+      <div className='inline-block mt-8 ml-4'>
+        <BackButton to="/products" label="Volver a Productos" />
+      </div>
 
-      {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
+      <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Checkout</h2>
 
-      <form onSubmit={handleFormSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Dirección:</label>
-          <input
-            type="text"
-            value={orderAddress}
-            onChange={(e) => setOrderAddress(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-            required
-          />
-        </div>
+        {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
 
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Método de Pago:</label>
-          <select
-            value={payMethodId || ''}
-            onChange={(e) => setPayMethodId(Number(e.target.value))}
-            className="w-full px-4 py-2 border rounded-lg"
-            required
+        <form onSubmit={handleFormSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">Dirección:</label>
+            <input
+              type="text"
+              value={orderAddress}
+              onChange={(e) => setOrderAddress(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">Método de Pago:</label>
+            <select
+              value={payMethodId || ''}
+              onChange={(e) => setPayMethodId(Number(e.target.value))}
+              className="w-full px-4 py-2 border rounded-lg"
+              required
+            >
+              <option value="">Seleccione un método de pago</option>
+              {paymentMethods.map((method) => (
+                <option key={method.id} value={method.id}>
+                  {method.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
+            disabled={loading}
           >
-            <option value="">Seleccione un método de pago</option>
-            {paymentMethods.map((method) => (
-              <option key={method.id} value={method.id}>
-                {method.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
-          disabled={loading}
-        >
-          {loading ? 'Procesando...' : 'Confirmar Pedido'}
-        </button>
-      </form>
-    </div>
+            {loading ? 'Procesando...' : 'Confirmar Pedido'}
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 
