@@ -21,7 +21,7 @@ const cartSlice = createSlice({
   reducers: {
     addItem: (state, action: PayloadAction<{ product: Product; quantity: number }>) => {
       const { product, quantity } = action.payload;
-      const existingItem = state.items.find((item) => item.product.id === product.id);
+      const existingItem = state.items.find((item) => item.product.idProduct === product.idProduct);
 
       if (existingItem) {
         const totalQuantity = existingItem.quantity + quantity;

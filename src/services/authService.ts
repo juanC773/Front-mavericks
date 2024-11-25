@@ -1,4 +1,3 @@
-// src/services/AuthService.ts
 import Cookies from 'js-cookie';
 
 interface JwtPayload {
@@ -87,6 +86,25 @@ class AuthService {
       newToken = newToken.substring(7);
     }
     this.setToken(newToken);
+  }
+
+  // Método de logout para conectarse con el backend
+  static async logout(): Promise<void> {
+    try {
+      // Llama al endpoint del backend para invalidar la sesión
+      await fetch('http://localhost:8080/mavericks/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (error) {
+      console.error('Error durante el logout:', error);
+    } finally {
+      // Limpia el token del cliente
+      this.clearToken();
+
+      // Redirige al backend para mostrar la página de login
+      window.location.href = 'http://localhost:8080/mavericks/auth/login';
+    }
   }
 }
 
