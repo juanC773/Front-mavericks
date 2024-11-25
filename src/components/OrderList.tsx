@@ -5,6 +5,7 @@ import '../styles/OrderListStyle.css';
 
 interface OrderListProps {
   orders: Order[];
+  isAdmin: boolean; // Agregamos esta propiedad para saber si es admin
 }
 
 const getStateClassName = (state: string): string => {
@@ -23,7 +24,7 @@ const getStateClassName = (state: string): string => {
   }
 };
 
-const OrderList: React.FC<OrderListProps> = ({ orders }) => {
+const OrderList: React.FC<OrderListProps> = ({ orders, isAdmin }) => {
   if (orders.length === 0) {
     return (
       <div className="orders-list-container">
@@ -56,9 +57,17 @@ const OrderList: React.FC<OrderListProps> = ({ orders }) => {
                 month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
-                minute: '2-digit'
+                minute: '2-digit',
               })}
             </p>
+
+            {/* Mostrar el username solo si es admin */}
+            {isAdmin && (
+              <p>
+                <strong>Usuario:</strong> {order.username}
+              </p>
+            )}
+
             <Link to={`/orders/${order.id}`} className="order-item-link">
               Ver detalles
             </Link>

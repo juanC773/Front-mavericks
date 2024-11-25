@@ -4,7 +4,7 @@ import OrderList from '../components/OrderList';
 import '../styles/OrdersPageStyle.css';
 
 const OrdersPage = () => {
-  const { orders, loading, error } = useFetchOrders();
+  const { orders, loading, error, isAdmin } = useFetchOrders(); // Recibimos isAdmin
 
   if (loading) {
     return (
@@ -32,7 +32,7 @@ const OrdersPage = () => {
         <div className="orders-card">
           <h1 className="orders-title">Mis Órdenes</h1>
           <div className="orders-list">
-            <OrderList orders={orders} />
+            <OrderList orders={orders} isAdmin={isAdmin} /> {/* Pasamos isAdmin aquí */}
           </div>
         </div>
       </div>
