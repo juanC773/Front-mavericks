@@ -6,7 +6,7 @@ import { Product } from '../types/Product';
 import { Category } from '../types/Category';
 import PageTitle from '../components/PageTitle';
 import { Upload } from 'lucide-react';
-import '../styles/forms.css';
+import '../styles/Forms.css';
 
 const EditProductPage: React.FC = () => {
   const { id } = useParams();
