@@ -25,7 +25,8 @@ const getStateClassName = (state: string): string => {
   }
 };
 
-const OrderList: React.FC<OrderListProps> = ({ orders, isAdmin }) => {
+const OrderList: React.FC<OrderListProps> = ({ orders: initialOrders, isAdmin }) => {
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [showModal, setShowModal] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<number | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -38,6 +39,9 @@ const OrderList: React.FC<OrderListProps> = ({ orders, isAdmin }) => {
 
       if (response.status === 200) {
         setToastMessage('Pedido eliminado con éxito.');
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order.id !== orderToDelete)
+        );
         setShowModal(false);
       } else {
         setToastMessage('Hubo un error al eliminar el pedido.');
@@ -55,12 +59,16 @@ const OrderList: React.FC<OrderListProps> = ({ orders, isAdmin }) => {
   const handleUpdateOrderState = async (orderId: number, newState: string) => {
     try {
       const response = await axios.put(`/orders/update/state/${orderId}`, {
-        state: newState, // Estructura compatible con el backend
+        state: newState,
       });
   
       if (response.status === 200) {
         setToastMessage('Estado de la orden actualizado con éxito.');
-        // Opcional: Actualizar el estado localmente o recargar la lista
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId ? { ...order, state: newState } : order
+          )
+        );
       } else {
         setToastMessage('Error al actualizar el estado de la orden.');
       }
