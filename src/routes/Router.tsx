@@ -22,15 +22,15 @@ const router = createRoutesFromElements(
     }
   >
     <Route path="/" element={<FirstPage />} />
-    <Route path="/products" element={<ProductPage />} />
-    <Route path="/products/add" element={<AddProductPage />} />
-    <Route path="/products/edit/:id" element={<EditProductPage />} />
-    <Route path="/cart" element={<Cart />} />
-    <Route path="/checkout" element={<Checkout />} />
-    <Route path="/order-success" element={<OrderSuccessPage />} />
+    <Route path="/products" element={<ProductPage />} /> todos
+    <Route path="/products/add" element={<AddProductPage />} /> admin
+    <Route path="/products/edit/:id" element={<EditProductPage />} /> admin
+    <Route path="/cart" element={<Cart />} /> todos
+    <Route path="/checkout" element={<Checkout />} /> todos
+    <Route path="/order-success" element={<OrderSuccessPage />} /> todos
     <Route path="/auth-test" element={<AuthTestPage />} />
-    <Route path="/orders" element={<OrdersPage />} />
-    <Route path="/orders/:id" element={<OrderDetailsPage />} />
+    <Route path="/orders" element={<OrdersPage />} /> todos
+    <Route path="/orders/:id" element={<OrderDetailsPage />} /> todos
   </Route>
 );
 
