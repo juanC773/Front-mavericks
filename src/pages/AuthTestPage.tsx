@@ -1,4 +1,3 @@
-// src/pages/AuthTestPage.tsx
 import React, { useState, useEffect } from 'react';
 import AuthService from '../services/authService';
 

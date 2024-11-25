@@ -68,7 +68,7 @@ const useAuth = ({
   // Método para cerrar sesión
   const logout = useCallback(async () => {
     try {
-      await AuthService.logout(); // Llama al servicio de logout
+      await AuthService.logout();
       setAuthState({
         isAuthenticated: false,
         isAdmin: false,
@@ -129,7 +129,7 @@ const useAuth = ({
   return {
     ...authState,
     checkAuth,
-    logout, // Incluir el método logout
+    logout,
     hasRole,
     canAccess,
     shouldRender,

@@ -74,7 +74,7 @@ const AddProductPage: React.FC = () => {
       image: imageUrl, // Incluimos la URL de la imagen
     };
 
-    console.log('Producto a guardar:', newProduct); // Agrega este log
+    console.log('Producto a guardar:', newProduct);
     try {
       setLoading(true);
       await ProductService.createProduct(newProduct);

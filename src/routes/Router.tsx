@@ -1,4 +1,3 @@
-// routes/Router.tsx
 import { createBrowserRouter, createRoutesFromElements, Route, Outlet } from 'react-router-dom';
 
 import FirstPage from '../pages/FirstPage';

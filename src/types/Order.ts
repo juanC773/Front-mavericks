@@ -1,4 +1,3 @@
-// src/types/Order.ts
 export interface CartItem {
   id: number;
   productId: number;

@@ -1,4 +1,3 @@
-// pages/AccessDeniedPage.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldAlert, Home } from 'lucide-react';

@@ -1,4 +1,3 @@
-// types/orderTypes.ts
 export interface Order {
   id: number;
   state: string;

@@ -1,5 +1,5 @@
-import axios from './axios'; // Importar la instancia de axios
-import { Product } from '../types/Product'; //Importar la interface product para el tema de los tipados
+import axios from './axios';
+import { Product } from '../types/Product';
 
 interface SearchParams {
   name?: string;

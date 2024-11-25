@@ -1,8 +1,6 @@
-// src/services/OrderService.ts
 import instance from './axios';
-import { CartItem } from '../types/Order'; // Crear este tipo primero
+import { CartItem } from '../types/Order';
 
-// Definimos los tipos
 interface CartItemDTO {
   productId: number;
   quantity: number;
@@ -30,7 +28,6 @@ export interface OrderResponse {
   };
 }
 
-// El servicio
 const OrderService = {
   createOrder: async (orderData: CreateOrderDTO): Promise<OrderResponse> => {
     try {

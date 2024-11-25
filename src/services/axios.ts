@@ -1,4 +1,3 @@
-// src/axios.ts
 import axios from 'axios';
 import AuthService from './authService';
 import { toast } from 'react-toastify';
