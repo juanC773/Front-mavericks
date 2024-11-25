@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store'; // Importar RootState
 import { ShoppingCart } from 'lucide-react';
-import '../styles/navbar.css';
+import '../styles/Navbar.css';
 import logo from '../img/logo_2.png';
 
 function NavBar() {
