@@ -4,7 +4,7 @@ import ProductService from '../services/ProductService';
 import { useNavigate } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import { Upload } from 'lucide-react';
-import '../styles/Forms.css';
+import '../styles/forms.css';
 import { Category } from '../types/Category';
 
 const AddProductPage: React.FC = () => {
