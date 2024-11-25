@@ -19,7 +19,6 @@ interface ConfirmationModalProps {
     onConfirm,
     onCancel
   }) => {
-    // Cerrar modal con la tecla Escape
     useEffect(() => {
       const handleEscape = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
@@ -31,7 +30,6 @@ interface ConfirmationModalProps {
       return () => document.removeEventListener('keydown', handleEscape);
     }, [onCancel]);
   
-    // Prevenir scroll del body
     useEffect(() => {
       document.body.style.overflow = 'hidden';
       return () => {

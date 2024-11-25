@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from '../services/axios';
-import useAuth from './useAuth'; // Suponiendo que tienes el hook de autenticación
+import useAuth from './useAuth';
 import { Order } from '../types/Order';
 
 export const useFetchOrders = () => {
-  const { isAuthenticated, isLoading, username, roles } = useAuth(); // Obtenemos roles de useAuth
-  const isAdmin = roles.includes('ADMIN'); // Verificar si es admin
+  const { isAuthenticated, isLoading, username, roles } = useAuth();
+  const isAdmin = roles.includes('ADMIN');
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,9 +17,8 @@ export const useFetchOrders = () => {
       try {
         let url = '/orders/user/' + username;
 
-        // Si el usuario es admin, obtiene todas las órdenes
         if (isAdmin) {
-          url = '/orders/all'; // El admin obtiene todas las órdenes
+          url = '/orders/all';
         }
 
         const response = await axios.get(url);
@@ -34,7 +33,7 @@ export const useFetchOrders = () => {
     };
 
     fetchOrders();
-  }, [isAuthenticated, isLoading, username, roles]); // Dependiendo de roles también
+  }, [isAuthenticated, isLoading, username, roles]);
 
-  return { orders, loading, error, isAdmin }; // Devolvemos isAdmin aquí
+  return { orders, loading, error, isAdmin };
 };

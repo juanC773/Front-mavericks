@@ -1,10 +1,9 @@
-import React from 'react';
 import { useFetchOrders } from '../hooks/useFetchOrders';
 import OrderList from '../components/OrderList';
 import '../styles/OrdersPageStyle.css';
 
 const OrdersPage = () => {
-  const { orders, loading, error, isAdmin } = useFetchOrders(); // Recibimos isAdmin
+  const { orders, loading, error, isAdmin } = useFetchOrders();
 
   if (loading) {
     return (
