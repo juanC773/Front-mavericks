@@ -63,6 +63,19 @@
     font-size: 0.875rem;
     transition: background-color 0.3s ease;
   }
+
+  .order-delete-button {
+    display: inline-block;
+    margin-top: 0.75rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #8d0808;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease;
+  }
   
   .order-item-link:hover {
     background-color: #3a1b15;
