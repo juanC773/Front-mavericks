@@ -33,7 +33,7 @@ export const useFetchOrders = () => {
     };
 
     fetchOrders();
-  }, [isAuthenticated, isLoading, username, roles]);
+  }, [isAuthenticated, isAdmin, isLoading, username, roles]);
 
   return { orders, loading, error, isAdmin };
 };

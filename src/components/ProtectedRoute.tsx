@@ -9,10 +9,10 @@ interface ProtectedRouteProps {
   loginUrl?: string;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
   requiredRole,
-  loginUrl = 'http://localhost:8080/mavericks/auth/login'
+  loginUrl = 'http://localhost:8080/mavericks/auth/login',
 }) => {
   const { isAuthenticated, hasRole, isLoading } = useAuth();
 

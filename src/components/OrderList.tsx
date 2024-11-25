@@ -39,14 +39,13 @@ const OrderList: React.FC<OrderListProps> = ({ orders: initialOrders, isAdmin })
 
       if (response.status === 200) {
         setToastMessage('Pedido eliminado con éxito.');
-        setOrders((prevOrders) =>
-          prevOrders.filter((order) => order.id !== orderToDelete)
-        );
+        setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderToDelete));
         setShowModal(false);
       } else {
         setToastMessage('Hubo un error al eliminar el pedido.');
       }
     } catch (error) {
+      console.error(error);
       setToastMessage('Error al eliminar el pedido.');
     }
   };
@@ -61,13 +60,11 @@ const OrderList: React.FC<OrderListProps> = ({ orders: initialOrders, isAdmin })
       const response = await axios.put(`/orders/update/state/${orderId}`, {
         state: newState,
       });
-  
+
       if (response.status === 200) {
         setToastMessage('Estado de la orden actualizado con éxito.');
         setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.id === orderId ? { ...order, state: newState } : order
-          )
+          prevOrders.map((order) => (order.id === orderId ? { ...order, state: newState } : order))
         );
       } else {
         setToastMessage('Error al actualizar el estado de la orden.');
@@ -77,7 +74,6 @@ const OrderList: React.FC<OrderListProps> = ({ orders: initialOrders, isAdmin })
       setToastMessage('Error al actualizar el estado de la orden.');
     }
   };
-  
 
   if (orders.length === 0) {
     return (
@@ -110,45 +106,46 @@ const OrderList: React.FC<OrderListProps> = ({ orders: initialOrders, isAdmin })
                 minute: '2-digit',
               })}
             </p>
-            
+
             <>
               {isAdmin && (
-              <>
-                <p>
-                  <strong>Usuario:</strong> {order.username}
-                </p>
-              </>
+                <>
+                  <p>
+                    <strong>Usuario:</strong> {order.username}
+                  </p>
+                </>
               )}
               <div className="order-actions">
                 <Link to={`/orders/${order.id}`} className="order-item-link">
                   Ver detalles
                 </Link>
                 {isAdmin && (
-                <>
-                  <select
-                    className="order-state-dropdown"
-                    value={order.state}
-                    onChange={(e) => handleUpdateOrderState(order.id, e.target.value)}
-                  >
-                    <option value="PENDING">PENDING</option>
-                    <option value="TRAVELING">TRAVELING</option>
-                    <option value="DELIVERED">DELIVERED</option>
-                  </select>
-                </>
+                  <>
+                    <select
+                      className="order-state-dropdown"
+                      value={order.state}
+                      onChange={(e) => handleUpdateOrderState(order.id, e.target.value)}
+                    >
+                      <option value="PENDING">PENDING</option>
+                      <option value="TRAVELING">TRAVELING</option>
+                      <option value="DELIVERED">DELIVERED</option>
+                    </select>
+                  </>
                 )}
               </div>
             </>
             {isAdmin && (
-            <>
-              <button
-                className="order-delete-button"
-                onClick={() => {
-                setOrderToDelete(order.id);
-                setShowModal(true);
-                }}>
-                Eliminar
-              </button>
-            </>
+              <>
+                <button
+                  className="order-delete-button"
+                  onClick={() => {
+                    setOrderToDelete(order.id);
+                    setShowModal(true);
+                  }}
+                >
+                  Eliminar
+                </button>
+              </>
             )}
           </li>
         ))}

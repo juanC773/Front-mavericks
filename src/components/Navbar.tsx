@@ -17,7 +17,7 @@ function NavBar() {
 
   // Estado para manejar la visibilidad del menú desplegable
   const [menuVisible, setMenuVisible] = useState(false);
-  
+
   // Manejar redirecciones al backend
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -57,7 +57,9 @@ function NavBar() {
           <a className="init text-lg" href="#" onClick={handleHomeClick}>
             Inicio
           </a>
-          <Link to="/orders" className='text-lg init'>Ordenes</Link>
+          <Link to="/orders" className="text-lg init">
+            Ordenes
+          </Link>
           <a className="contact text-lg" href="#contacto">
             Contacto
           </a>

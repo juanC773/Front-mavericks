@@ -28,7 +28,7 @@ const OrdersPage = () => {
 
   return (
     <>
-      <div className='inline-block mt-8 ml-4 w-full bg-white'>
+      <div className="inline-block mt-8 ml-4 w-full bg-white">
         <BackButton to="/products" label="Volver a Productos" />
       </div>
       <div className="orders-page-container">

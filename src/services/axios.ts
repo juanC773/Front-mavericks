@@ -19,7 +19,7 @@ instance.interceptors.request.use(
   async (config) => {
     const token = AuthService.getToken();
     console.log('Token obtenido:', token);
-    
+
     if (token && AuthService.isTokenExpiringSoon()) {
       try {
         const response = await axios.post('/auth/refresh', {
@@ -55,7 +55,7 @@ instance.interceptors.response.use(
     // Verificar cookies
     const cookies = document.cookie.split(';');
     let token = null;
-    
+
     for (const cookie of cookies) {
       console.log('Cookie:', cookie);
       const [name, value] = cookie.trim().split('=');

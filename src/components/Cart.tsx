@@ -19,7 +19,7 @@ const Cart: React.FC = () => {
         <p className="text-center text-black text-5xl flex justify-center mt-32 mb-14">
           El carrito está vacío.
         </p>
-        <div className='inline-block mb-8'>
+        <div className="inline-block mb-8">
           <BackButton to="/products" label="Volver a Productos" />
         </div>
       </div>
@@ -28,7 +28,7 @@ const Cart: React.FC = () => {
 
   return (
     <>
-      <div className='inline-block mt-8 ml-4'>
+      <div className="inline-block mt-8 ml-4">
         <BackButton to="/products" label="Volver a Productos" />
       </div>
 
@@ -74,7 +74,8 @@ const Cart: React.FC = () => {
                 </button>
                 <button
                   onClick={() =>
-                    item.product.idProduct !== undefined && dispatch(removeItem(item.product.idProduct))
+                    item.product.idProduct !== undefined &&
+                    dispatch(removeItem(item.product.idProduct))
                   }
                   className="px-2 py-1 bg-red-500 text-white font-semibold rounded shadow hover:bg-red-600 transition"
                 >

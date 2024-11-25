@@ -29,6 +29,7 @@ const Checkout: React.FC = () => {
         const response = await axios.get('/paymethods');
         setPaymentMethods(response.data);
       } catch (err) {
+        console.log('Error fetching payment methods:', err);
         setError('Error al cargar los métodos de pago.');
       }
     };
@@ -56,7 +57,7 @@ const Checkout: React.FC = () => {
         state: 'PENDING',
         description: 'Nueva orden desde el frontend',
         orderAddress: orderAddress,
-        cartItems: cartItems.map(item => ({
+        cartItems: cartItems.map((item) => ({
           productId: item.product.idProduct,
           quantity: item.quantity,
         })),
@@ -73,6 +74,7 @@ const Checkout: React.FC = () => {
         navigate('/order-success');
       }, 500);
     } catch (err) {
+      console.error('Error creating order:', err);
       setError('Hubo un error al procesar tu pedido. Intenta nuevamente.');
     } finally {
       setLoading(false);
@@ -81,7 +83,7 @@ const Checkout: React.FC = () => {
 
   return (
     <>
-      <div className='inline-block mt-8 ml-4'>
+      <div className="inline-block mt-8 ml-4">
         <BackButton to="/products" label="Volver a Productos" />
       </div>
 

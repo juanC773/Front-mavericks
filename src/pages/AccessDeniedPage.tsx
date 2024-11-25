@@ -9,11 +9,9 @@ const AccessDeniedPage: React.FC = () => {
       <div className="text-center p-8 bg-white rounded-lg shadow-lg max-w-md">
         <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-4" />
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Acceso Denegado</h1>
-        <p className="text-gray-600 mb-6">
-          No tienes permisos para acceder a esta página.
-        </p>
+        <p className="text-gray-600 mb-6">No tienes permisos para acceder a esta página.</p>
         <div className="space-x-4">
-          <Link 
+          <Link
             to="/products"
             className="inline-flex items-center px-4 py-2 bg-orange-500 text-white rounded-full
                      hover:bg-orange-600 transition-colors duration-200"
