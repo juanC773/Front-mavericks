@@ -55,7 +55,7 @@ function NavBar() {
           <a className="init text-lg" href="#" onClick={handleHomeClick}>
             Inicio
           </a>
-          
+          <Link to="/orders" className='text-lg init'>Ordenes</Link>
           <a className="contact text-lg" href="#contacto">
             Contacto
           </a>
