@@ -1,4 +1,3 @@
-// hooks/useAuth.ts
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/authService';
@@ -66,6 +65,24 @@ const useAuth = ({
     });
   }, [navigate, redirectTo, requiredRole]);
 
+  // Método para cerrar sesión
+  const logout = useCallback(async () => {
+    try {
+      await AuthService.logout(); // Llama al servicio de logout
+      setAuthState({
+        isAuthenticated: false,
+        isAdmin: false,
+        roles: [],
+        username: null,
+        isLoading: false,
+        hasPermission: false,
+      });
+      navigate('/login'); // Redirige al usuario al login
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  }, [navigate]);
+
   // Verificar al montar y cuando cambien las dependencias
   useEffect(() => {
     checkAuth();
@@ -112,6 +129,7 @@ const useAuth = ({
   return {
     ...authState,
     checkAuth,
+    logout, // Incluir el método logout
     hasRole,
     canAccess,
     shouldRender,

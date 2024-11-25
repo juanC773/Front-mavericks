@@ -5,8 +5,10 @@ import { RootState } from '../store'; // Importar RootState
 import { ShoppingCart } from 'lucide-react';
 import '../styles/Navbar.css';
 import logo from '../img/logo_2.png';
+import useAuth from '../hooks/useAuth'; // Importar el hook useAuth
 
 function NavBar() {
+  const { logout } = useAuth(); // Obtener el método logout del hook
   // Usar useSelector para acceder al estado del carrito en Redux
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -101,9 +103,12 @@ function NavBar() {
                 <a href="#info" className="block px-4 py-2 hover:bg-gray-200">
                   Información
                 </a>
-                <a href="#logout" className="block px-4 py-2 hover:bg-gray-200">
+                <button
+                  onClick={logout} // Llamar al método logout al hacer clic
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
                   Cerrar sesión
-                </a>
+                </button>
               </div>
             )}
           </div>

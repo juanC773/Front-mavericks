@@ -4,9 +4,6 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 
-// Importa el CartProvider
-import { CartProvider } from './context/CartContext';
-
 // Router
 import { RouterProvider } from 'react-router-dom';
 import { routes } from './routes/Router';
@@ -14,9 +11,7 @@ import { routes } from './routes/Router';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <CartProvider>
-        <RouterProvider router={routes} />
-      </CartProvider>
+      <RouterProvider router={routes} />
     </PersistGate>
   </Provider>
 );
