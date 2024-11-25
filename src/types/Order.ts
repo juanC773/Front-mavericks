@@ -1,6 +1,4 @@
 // src/types/Order.ts
-import { Product } from './Product';
-
 export interface CartItem {
   id: number;
   productId: number;
@@ -23,6 +21,6 @@ export interface Order {
   description: string;
   orderAddress: string;
   cartItems: CartItem[];
-  payMethod: PayMethod; // Agregado
-  totalAmount: number;  // Agregado
+  payMethod: PayMethod;
+  totalAmount: number;
 }
